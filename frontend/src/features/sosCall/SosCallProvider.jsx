@@ -641,8 +641,7 @@ function SosCallPanel({
     return () => window.clearInterval(timer);
   }, [isActive]);
 
-  const shouldShow =
-    callState !== "idle" || !!error || socketState === "connecting";
+  const shouldShow = callState !== "idle" || !!error;
 
   if (!shouldShow) {
     return <audio ref={remoteAudioRef} autoPlay playsInline />;
