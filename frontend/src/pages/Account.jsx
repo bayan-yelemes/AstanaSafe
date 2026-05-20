@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Settings,
@@ -246,6 +246,30 @@ export default function Account() {
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
 
+  const loadAllReports = useCallback(async () => {
+    try {
+      const reports = await getRawTrafficReports();
+      const normalized = reports.map((report) => ({
+        id: report.id,
+        lat: report.lat,
+        lng: report.lng,
+        road: report.road || "",
+        crossroad: report.crossroad || "",
+        category: report.category,
+        type: report.type || "",
+        weather: report.weather || "",
+        district: report.district || "",
+        userName: report.user_name || "User",
+        createdAt: report.created_at,
+        normalizedType: normalizeType(report),
+        normalizedSeverity: normalizeSeverity(report),
+      }));
+      setAllReports(normalized);
+    } catch (error) {
+      reportError("Error fetching all account reports:", error);
+    }
+  }, []);
+
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
@@ -253,32 +277,29 @@ export default function Account() {
   }, [currentUser, navigate]);
 
   useEffect(() => {
-    const fetchAllReports = async () => {
-      try {
-        const reports = await getRawTrafficReports();
-        const normalized = reports.map((report) => ({
-          id: report.id,
-          lat: report.lat,
-          lng: report.lng,
-          road: report.road || "",
-          crossroad: report.crossroad || "",
-          category: report.category,
-          type: report.type || "",
-          weather: report.weather || "",
-          district: report.district || "",
-          userName: report.user_name || "User",
-          createdAt: report.created_at,
-          normalizedType: normalizeType(report),
-          normalizedSeverity: normalizeSeverity(report),
-        }));
-        setAllReports(normalized);
-      } catch (error) {
-        reportError("Error fetching all account reports:", error);
+    loadAllReports();
+  }, [loadAllReports]);
+
+  useEffect(() => {
+    if (!currentUser) return undefined;
+
+    const syncIfVisible = () => {
+      if (document.visibilityState === "visible") {
+        loadAllReports();
       }
     };
 
-    fetchAllReports();
-  }, []);
+    const intervalId = window.setInterval(syncIfVisible, 15000);
+
+    window.addEventListener("focus", syncIfVisible);
+    document.addEventListener("visibilitychange", syncIfVisible);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", syncIfVisible);
+      document.removeEventListener("visibilitychange", syncIfVisible);
+    };
+  }, [currentUser, loadAllReports]);
 
   const myReports = useMemo(() => {
     return allReports

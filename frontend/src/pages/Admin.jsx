@@ -98,11 +98,13 @@ export default function Admin() {
     [users],
   );
 
-  const loadUsers = useCallback(async () => {
+  const loadUsers = useCallback(async ({ silent = false } = {}) => {
     if (!hasAdminAccess) return;
 
     try {
-      setLoading(true);
+      if (!silent) {
+        setLoading(true);
+      }
       setError("");
       const data = await getUsers();
       setUsers(data);
@@ -112,13 +114,36 @@ export default function Admin() {
       reportError("Failed to load users:", error);
       setError(error?.response?.data?.detail || t("adminPage.loadError"));
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   }, [hasAdminAccess, t]);
 
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
+
+  useEffect(() => {
+    if (!hasAdminAccess) return undefined;
+
+    const syncIfVisible = () => {
+      if (document.visibilityState === "visible") {
+        loadUsers({ silent: true });
+      }
+    };
+
+    const intervalId = window.setInterval(syncIfVisible, 15000);
+
+    window.addEventListener("focus", syncIfVisible);
+    document.addEventListener("visibilitychange", syncIfVisible);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", syncIfVisible);
+      document.removeEventListener("visibilitychange", syncIfVisible);
+    };
+  }, [hasAdminAccess, loadUsers]);
 
   useEffect(() => {
     if (!selectedUser) {

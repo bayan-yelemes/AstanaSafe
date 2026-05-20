@@ -265,10 +265,16 @@ export default function MySos() {
   const fetchSosIncidents = useAppStore((state) => state.fetchSosIncidents);
   const [loading, setLoading] = useState(false);
 
-  const loadIncidents = useCallback(async () => {
-    setLoading(true);
+  const loadIncidents = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) {
+      setLoading(true);
+    }
+
     await fetchSosIncidents({ activeOnly: false });
-    setLoading(false);
+
+    if (!silent) {
+      setLoading(false);
+    }
   }, [fetchSosIncidents]);
 
   useEffect(() => {
@@ -281,6 +287,27 @@ export default function MySos() {
     }
 
     return undefined;
+  }, [currentUser, loadIncidents]);
+
+  useEffect(() => {
+    if (!currentUser) return undefined;
+
+    const syncIfVisible = () => {
+      if (document.visibilityState === "visible") {
+        loadIncidents({ silent: true });
+      }
+    };
+
+    const intervalId = window.setInterval(syncIfVisible, 10000);
+
+    window.addEventListener("focus", syncIfVisible);
+    document.addEventListener("visibilitychange", syncIfVisible);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", syncIfVisible);
+      document.removeEventListener("visibilitychange", syncIfVisible);
+    };
   }, [currentUser, loadIncidents]);
 
   const myIncidents = useMemo(() => {

@@ -25,6 +25,12 @@ export async function loginUser({ emailOrPhone, password }) {
   return data.user;
 }
 
+export async function getCurrentUser() {
+  const { data } = await api.get("/auth/me");
+
+  return data;
+}
+
 export async function requestPasswordReset(email) {
   const { data } = await api.post("/auth/forgot-password", {
     email: email.trim(),

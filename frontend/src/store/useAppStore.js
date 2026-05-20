@@ -15,7 +15,11 @@ import {
 } from "../services/trafficReportsService";
 import { getCurrentWeather } from "../services/weatherService";
 import { getIntersections, getStreets } from "../services/roadsService";
-import { changeMyPassword, updateMyProfile } from "../services/authService";
+import {
+  changeMyPassword,
+  getCurrentUser,
+  updateMyProfile,
+} from "../services/authService";
 import { formatDateForApi } from "../utils/date";
 import { reportError } from "../utils/logger";
 import {
@@ -176,6 +180,30 @@ export const useAppStore = create(
 
       loadCurrentUser: () => {
         set({ currentUser: getStoredUser() });
+      },
+
+      refreshCurrentUser: async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return { ok: false, skipped: true };
+
+        try {
+          const user = await getCurrentUser();
+          const normalizedUser = normalizeStoredUser(user);
+          persistCurrentUser(normalizedUser);
+          set({ currentUser: normalizedUser });
+
+          return {
+            ok: true,
+            user: normalizedUser,
+          };
+        } catch (error) {
+          reportError("Error refreshing current user:", error);
+
+          return {
+            ok: false,
+            message: error?.response?.data?.detail || "Failed to refresh user.",
+          };
+        }
       },
 
       signOut: () => {

@@ -10,6 +10,8 @@ import { SosCallProvider } from "./features/sosCall/SosCallProvider";
 import AppLayout from "./layouts/AppLayout";
 import { useAppStore } from "./store/useAppStore";
 
+const LIVE_SYNC_INTERVAL_MS = 15000;
+
 function AppContent() {
   const location = useLocation();
   const language = useAppStore((state) => state.language);
@@ -26,6 +28,9 @@ function AppContent() {
   );
   const sosModalOpen = useAppStore((state) => state.sosModalOpen);
   const closeSosModal = useAppStore((state) => state.closeSosModal);
+  const fetchTrafficReports = useAppStore((state) => state.fetchTrafficReports);
+  const fetchSosIncidents = useAppStore((state) => state.fetchSosIncidents);
+  const refreshCurrentUser = useAppStore((state) => state.refreshCurrentUser);
   const signOut = useAppStore((state) => state.signOut);
   const hasAuthToken = !!localStorage.getItem("token");
   const isAuthenticated = !!currentUser && hasAuthToken;
@@ -41,6 +46,44 @@ function AppContent() {
       window.removeEventListener("astanasafe-auth-expired", signOut);
     };
   }, [signOut]);
+
+  useEffect(() => {
+    const sync = () => {
+      fetchTrafficReports();
+
+      if (hasAuthToken) {
+        refreshCurrentUser();
+      }
+
+      if (isAuthenticated) {
+        fetchSosIncidents({ activeOnly: false });
+      }
+    };
+
+    const syncIfVisible = () => {
+      if (document.visibilityState === "visible") {
+        sync();
+      }
+    };
+
+    const intervalId = window.setInterval(syncIfVisible, LIVE_SYNC_INTERVAL_MS);
+
+    sync();
+    window.addEventListener("focus", syncIfVisible);
+    document.addEventListener("visibilitychange", syncIfVisible);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", syncIfVisible);
+      document.removeEventListener("visibilitychange", syncIfVisible);
+    };
+  }, [
+    fetchSosIncidents,
+    fetchTrafficReports,
+    hasAuthToken,
+    isAuthenticated,
+    refreshCurrentUser,
+  ]);
 
   const isPasswordResetRoute = location.pathname === "/reset-password";
   const canUseApp = isAuthenticated || isPasswordResetRoute;
