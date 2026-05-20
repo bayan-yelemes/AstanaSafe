@@ -398,6 +398,7 @@ const dictionaries = {
       chooseIntersectionAlert:
         "No saved intersections found for this road. Please choose another road or click directly on the map.",
       visibleRealtime: "Your report will be visible to all users in real-time.",
+      saveError: "Could not save the report. Sign in again and try once more.",
       submitReport: "Submit Report",
     },
     map: {
@@ -1071,7 +1072,7 @@ const dictionaries = {
       fromDate: "С даты",
       toDate: "По дату",
       profile: "Профиль",
-      privacyData: "Данные и приватность",
+      privacyData: "Данные",
       userProfile: "Профиль пользователя",
       privacyAccountData: "Приватность и данные аккаунта",
       displayName: "Отображаемое имя",
@@ -1170,6 +1171,7 @@ const dictionaries = {
         "Для этой дороги нет сохраненных перекрестков. Выберите другую дорогу или кликните по карте.",
       visibleRealtime:
         "Ваш отчет будет виден всем пользователям в реальном времени.",
+      saveError: "Не удалось сохранить отчет. Войдите заново и попробуйте еще раз.",
       submitReport: "Отправить отчет",
     },
     map: {
@@ -1840,7 +1842,7 @@ const dictionaries = {
       fromDate: "Қай күннен",
       toDate: "Қай күнге дейін",
       profile: "Профиль",
-      privacyData: "Дерек және құпиялылық",
+      privacyData: "Деректер",
       userProfile: "Пайдаланушы профилі",
       privacyAccountData: "Аккаунт деректері және құпиялылық",
       displayName: "Көрсетілетін ат",
@@ -1939,6 +1941,7 @@ const dictionaries = {
         "Бұл жол үшін сақталған қиылыстар жоқ. Басқа жол таңдаңыз немесе картадан белгілеңіз.",
       visibleRealtime:
         "Есебіңіз барлық пайдаланушыларға нақты уақытта көрінеді.",
+      saveError: "Есеп сақталмады. Қайта кіріп, тағы бір рет көріңіз.",
       submitReport: "Есеп жіберу",
     },
     map: {

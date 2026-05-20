@@ -30,8 +30,8 @@ export default function AuthModal({ open, onClose }) {
     setNotice("");
 
     if (mode === "forgot") {
-      if (!emailOrPhone.trim() || !emailOrPhone.includes("@")) {
-        setError(t("auth.emailRequiredForReset"));
+      if (!emailOrPhone.trim()) {
+        setError(t("auth.fillRequired"));
         return;
       }
 
@@ -115,11 +115,6 @@ export default function AuthModal({ open, onClose }) {
     setMode("signin");
   };
 
-  const handleGoogleSignIn = () => {
-    setError(t("auth.googleUnavailable"));
-    setNotice("");
-  };
-
   return (
     <div
       className={["modal-backdrop", styles.authModalStyle1]
@@ -168,13 +163,13 @@ export default function AuthModal({ open, onClose }) {
 
         <label className={styles.fieldLabel}>
           {mode === "forgot"
-            ? t("auth.emailLabel")
+            ? t("auth.emailOrPhoneLabel")
             : t("auth.emailOrPhoneLabel")}
           <input
-            type={mode === "forgot" ? "email" : "text"}
+            type="text"
             placeholder={
               mode === "forgot"
-                ? t("auth.emailOnlyPlaceholder")
+                ? t("auth.emailPhone")
                 : t("auth.emailPhone")
             }
             value={emailOrPhone}
@@ -230,16 +225,6 @@ export default function AuthModal({ open, onClose }) {
                 ? t("auth.sendResetLink")
                 : t("auth.createAccount")}
         </button>
-
-        {mode !== "forgot" && (
-          <button
-            type="button"
-            onClick={handleGoogleSignIn}
-            className={styles.googleBtn}
-          >
-            {t("auth.continueGoogle")}
-          </button>
-        )}
 
         <div className={styles.authModalStyle5}>
           {mode === "forgot"

@@ -31,9 +31,11 @@ export async function getCurrentUser() {
   return data;
 }
 
-export async function requestPasswordReset(email) {
+export async function requestPasswordReset(identifier) {
+  const contact = identifier.trim();
   const { data } = await api.post("/auth/forgot-password", {
-    email: email.trim(),
+    email: contact,
+    contact,
   });
 
   return data;

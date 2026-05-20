@@ -49,6 +49,49 @@ def hash_reset_token(token: str) -> str:
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
+def normalize_phone(value: str | None) -> str:
+    return "".join(ch for ch in str(value or "") if ch.isdigit())
+
+
+def get_password_reset_identifier(payload: schemas.PasswordResetRequest) -> str:
+    return str(payload.contact or payload.email or "").strip()
+
+
+def find_user_for_password_reset(
+    db: Session,
+    identifier: str,
+) -> models.User | None:
+    if "@" in identifier:
+        email = identifier.lower()
+        return (
+            db.query(models.User)
+            .filter(func.lower(models.User.email) == email)
+            .first()
+        )
+
+    phone_digits = normalize_phone(identifier)
+    if not phone_digits:
+        return None
+
+    exact_phone_user = (
+        db.query(models.User)
+        .filter(models.User.phone == identifier)
+        .first()
+    )
+    if exact_phone_user:
+        return exact_phone_user
+
+    phone_users = db.query(models.User).filter(models.User.phone.isnot(None)).all()
+    return next(
+        (
+            user
+            for user in phone_users
+            if normalize_phone(user.phone) == phone_digits
+        ),
+        None,
+    )
+
+
 def build_password_reset_url(token: str) -> str:
     query = urlencode({"token": token})
     return f"{FRONTEND_URL.rstrip('/')}/reset-password?{query}"
@@ -250,15 +293,11 @@ def forgot_password(
     payload: schemas.PasswordResetRequest,
     db: Session = Depends(get_db),
 ):
-    email = str(payload.email).strip().lower()
+    identifier = get_password_reset_identifier(payload)
     generic_message = "If that email exists, a password reset link has been sent."
 
-    user = (
-        db.query(models.User)
-        .filter(func.lower(models.User.email) == email)
-        .first()
-    )
-    if not user or not user.email:
+    user = find_user_for_password_reset(db, identifier)
+    if not user or (not user.email and not PASSWORD_RESET_DEMO_MODE):
         return build_password_reset_response(generic_message)
 
     now = datetime.utcnow()

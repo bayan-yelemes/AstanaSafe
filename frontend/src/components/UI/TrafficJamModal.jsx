@@ -283,7 +283,10 @@ export default function TrafficJamModal({
         ...detailPayload,
       });
 
-      if (!result?.ok) return;
+      if (!result?.ok) {
+        setSubmitError(result?.message || t("trafficModal.saveError"));
+        return;
+      }
 
       focusNewReport(selectedPoint.lat, selectedPoint.lng, detectedDistrict);
       return;
@@ -322,7 +325,10 @@ export default function TrafficJamModal({
       ...detailPayload,
     });
 
-    if (!result?.ok) return;
+    if (!result?.ok) {
+      setSubmitError(result?.message || t("trafficModal.saveError"));
+      return;
+    }
 
     focusNewReport(
       selectedIntersection.lat,

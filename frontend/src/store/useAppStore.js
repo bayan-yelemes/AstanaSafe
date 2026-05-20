@@ -350,7 +350,13 @@ export const useAppStore = create(
           };
         } catch (error) {
           reportError("Error saving traffic report:", error);
-          return { ok: false };
+          return {
+            ok: false,
+            message:
+              error?.response?.status === 401
+                ? ""
+                : error?.response?.data?.detail || "",
+          };
         }
       },
 

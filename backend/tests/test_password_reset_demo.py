@@ -1,4 +1,5 @@
 from app.routers import auth
+from app.schemas import schemas
 
 
 def test_build_password_reset_url_uses_frontend_url(monkeypatch):
@@ -38,3 +39,9 @@ def test_build_password_reset_response_hides_url_when_demo_mode_disabled(
     assert response == {
         "message": "If that email exists, a password reset link has been sent."
     }
+
+
+def test_password_reset_request_accepts_phone_contact():
+    payload = schemas.PasswordResetRequest(contact="+7 700 111 22 33")
+
+    assert payload.contact == "+7 700 111 22 33"

@@ -81,7 +81,8 @@ class GoogleLoginIn(BaseModel):
 
 
 class PasswordResetRequest(BaseModel):
-    email: EmailStr
+    email: str | None = None
+    contact: str | None = None
 
 
 class PasswordResetConfirm(BaseModel):
