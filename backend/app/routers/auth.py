@@ -20,6 +20,7 @@ from ..config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     GOOGLE_CLIENT_ID,
     FRONTEND_URL,
+    PASSWORD_RESET_DEMO_MODE,
     PASSWORD_RESET_TOKEN_EXPIRE_MINUTES,
 )
 from ..services.email_service import send_password_reset_email
@@ -51,6 +52,16 @@ def hash_reset_token(token: str) -> str:
 def build_password_reset_url(token: str) -> str:
     query = urlencode({"token": token})
     return f"{FRONTEND_URL.rstrip('/')}/reset-password?{query}"
+
+
+def build_password_reset_response(
+    message: str,
+    reset_url: str | None = None,
+) -> dict[str, str]:
+    response = {"message": message}
+    if PASSWORD_RESET_DEMO_MODE and reset_url:
+        response["reset_url"] = reset_url
+    return response
 
 
 def create_access_token(data: dict, expires_minutes: int = ACCESS_TOKEN_EXPIRE_MINUTES):
@@ -248,7 +259,7 @@ def forgot_password(
         .first()
     )
     if not user or not user.email:
-        return {"message": generic_message}
+        return build_password_reset_response(generic_message)
 
     now = datetime.utcnow()
     token = secrets.token_urlsafe(32)
@@ -269,12 +280,16 @@ def forgot_password(
     )
     db.add(reset_token)
     db.commit()
+    reset_url = build_password_reset_url(token)
+
+    if PASSWORD_RESET_DEMO_MODE:
+        return build_password_reset_response(generic_message, reset_url)
 
     try:
         send_password_reset_email(
             to_email=user.email,
             full_name=user.full_name,
-            reset_url=build_password_reset_url(token),
+            reset_url=reset_url,
             expires_minutes=PASSWORD_RESET_TOKEN_EXPIRE_MINUTES,
         )
     except Exception as exc:
@@ -284,7 +299,7 @@ def forgot_password(
             detail="Password reset email could not be sent",
         )
 
-    return {"message": generic_message}
+    return build_password_reset_response(generic_message)
 
 
 @router.post("/reset-password", response_model=schemas.MessageOut)

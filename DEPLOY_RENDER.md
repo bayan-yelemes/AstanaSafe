@@ -43,6 +43,15 @@ Frontend:
 
 `SECRET_KEY` and `DATABASE_URL` are generated/provisioned by Render.
 
+## Password Reset Demo Mode
+
+The backend supports `PASSWORD_RESET_DEMO_MODE`.
+
+- `true`: the forgot-password form returns the reset link immediately and the frontend opens it automatically.
+- `false`: the backend sends the reset link by email only.
+
+`render.yaml` enables demo mode for the Render deployment in this repository.
+
 ## URLs To Check After Deploy
 
 - Backend health: `https://astanasafe-api.onrender.com/health`

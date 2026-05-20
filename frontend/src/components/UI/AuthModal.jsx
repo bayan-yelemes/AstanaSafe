@@ -37,7 +37,11 @@ export default function AuthModal({ open, onClose }) {
 
       try {
         setSubmitting(true);
-        await requestPasswordReset(emailOrPhone);
+        const response = await requestPasswordReset(emailOrPhone);
+        if (response?.reset_url) {
+          window.location.assign(response.reset_url);
+          return;
+        }
         setNotice(t("auth.resetEmailSent"));
         setPassword("");
       } catch (error) {

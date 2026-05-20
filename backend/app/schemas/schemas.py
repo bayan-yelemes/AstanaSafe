@@ -91,6 +91,7 @@ class PasswordResetConfirm(BaseModel):
 
 class MessageOut(BaseModel):
     message: str
+    reset_url: str | None = None
 
 
 class UserOut(BaseModel):

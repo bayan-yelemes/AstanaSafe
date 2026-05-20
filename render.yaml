@@ -22,6 +22,8 @@ services:
         value: https://astanasafe-web.onrender.com
       - key: PASSWORD_RESET_TOKEN_EXPIRE_MINUTES
         value: "30"
+      - key: PASSWORD_RESET_DEMO_MODE
+        value: "true"
       - key: GOOGLE_CLIENT_ID
         sync: false
       - key: GEMINI_API_KEY
