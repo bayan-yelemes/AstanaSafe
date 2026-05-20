@@ -5,7 +5,7 @@ services:
     rootDir: backend
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: python scripts/bootstrap_database.py && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: python -m scripts.bootstrap_database && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: ENVIRONMENT
