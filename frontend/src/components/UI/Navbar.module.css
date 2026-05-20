@@ -1,0 +1,15 @@
+.navbarStyle1 {
+  padding: 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.navbarStyle2 {
+  margin: 0;
+}
+
+.navbarStyle3 {
+  opacity: 0.8;
+}

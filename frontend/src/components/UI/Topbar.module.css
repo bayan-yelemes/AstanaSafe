@@ -1,0 +1,171 @@
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+  min-width: 0;
+}
+
+.leftGroup {
+  display: flex;
+  flex: 1 1 320px;
+  gap: 18px;
+  align-items: center;
+  min-width: 0;
+}
+
+.title {
+  color: var(--text-heading);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  flex-shrink: 0;
+  background: var(--border);
+}
+
+.datePicker {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sosButton,
+.trafficButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  border-radius: 16px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.sosButton {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #dc2626, #f97316);
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.25);
+  font-weight: 900;
+}
+
+.trafficButton {
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.26);
+  font-weight: 850;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    align-items: stretch;
+  }
+
+  .leftGroup,
+  .actions {
+    width: 100%;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    gap: 10px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .leftGroup {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .title {
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .datePicker {
+    flex: 1 1 210px;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 12px;
+    border-radius: 14px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .sosButton,
+  .trafficButton {
+    min-height: 44px;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+  }
+
+  .trafficButton span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 460px) {
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .actions > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .sosButton,
+  .trafficButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,148 @@
+.analyticsStyle1 {
+  background: var(--surface-raised);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  padding: 22px 22px;
+  min-height: 114px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.analyticsStyle2 {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 850;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.analyticsStyle3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.analyticsStyle4 {
+  font-size: 15px;
+  font-weight: 850;
+  color: var(--text-heading);
+}
+
+.analyticsStyle5 {
+  flex: 1;
+  min-height: 0;
+}
+
+.analyticsStyle6 {
+  padding-bottom: 8px;
+}
+
+.analyticsStyle7 {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.analyticsStyle8 {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-soft);
+}
+
+.analyticsStyle9 {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+  align-items: stretch;
+}
+
+.analyticsStyle10 {
+  height: 250px;
+}
+
+.analyticsStyle11 {
+  height: 250px;
+}
+
+.analyticsStyle12 {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+  align-items: stretch;
+}
+
+.analyticsStyle13 {
+  height: 250px;
+}
+
+.analyticsStyle14 {
+  height: 250px;
+}
+
+.analyticsStyle15 {
+  display: grid;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.analyticsStyle16 {
+  height: 260px;
+}
+
+.analyticsStyle17 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.analyticsStyle18 {
+  height: 260px;
+}
+
+@media (max-width: 760px) {
+  .analyticsStyle1 {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .analyticsStyle10,
+  .analyticsStyle11,
+  .analyticsStyle13,
+  .analyticsStyle14 {
+    height: 220px;
+  }
+
+  .analyticsStyle16,
+  .analyticsStyle18 {
+    height: 230px;
+  }
+}
+
+@media (max-width: 520px) {
+  .analyticsStyle3 {
+    align-items: flex-start;
+  }
+
+  .analyticsStyle10,
+  .analyticsStyle11,
+  .analyticsStyle13,
+  .analyticsStyle14,
+  .analyticsStyle16,
+  .analyticsStyle18 {
+    height: 210px;
+  }
+}

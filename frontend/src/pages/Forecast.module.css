@@ -1,0 +1,1183 @@
+.forecastStyle1 {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  padding: 18px;
+  color: white;
+  min-height: 122px;
+}
+
+.forecastStyle2 {
+  font-size: 12px;
+  opacity: 0.82;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.forecastStyle3 {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.forecastStyle4 {
+  background: var(--surface-soft);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.forecastStyle5 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.forecastStyle6 {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.forecastStyle7 {
+  font-weight: 900;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.forecastStyle8 {
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.forecastStyle9 {
+  background: linear-gradient(135deg, var(--primary), #4338ca);
+  border-radius: 20px;
+  padding: 24px;
+  color: white;
+  margin-bottom: 18px;
+  box-shadow: 0 22px 54px rgba(37, 99, 235, 0.25);
+}
+
+.forecastStyle10 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.forecastStyle11 {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.forecastStyle12 {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.forecastStyle13 {
+  font-size: 34px;
+  font-weight: 900;
+  margin-bottom: 4px;
+  letter-spacing: 0;
+}
+
+.forecastStyle14 {
+  opacity: 0.9;
+}
+
+.forecastStyle15 {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 700;
+}
+
+.forecastStyle16 {
+  border: none;
+  background: white;
+  color: #2563eb;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.forecastStyle17 {
+  opacity: 0.9;
+}
+
+.forecastStyle18 {
+  margin-bottom: 22px;
+  line-height: 1.7;
+}
+
+.forecastStyle19 {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.forecastStyle20 {
+  display: grid;
+  gap: 18px;
+}
+
+.forecastStyle21 {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+.forecastStyle22 {
+  align-self: start;
+}
+
+.forecastStyle23 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.forecastStyle24 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-heading);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.forecastStyle25 {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.forecastStyle26 {
+  color: var(--text-muted);
+}
+
+.forecastStyle27 {
+  display: grid;
+  gap: 18px;
+  align-self: start;
+}
+
+.forecastStyle28 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-weight: 900;
+  color: var(--text-heading);
+  font-size: 18px;
+}
+
+.forecastStyle29 {
+  border: 1px solid var(--primary-border);
+  background: var(--primary-soft);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.forecastStyle30 {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.forecastStyle31 {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 900;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.forecastStyle32 {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.forecastStyle33 {
+  background: var(--text-heading);
+  color: white;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.forecastStyle34 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.forecastStyle35 {
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.whatIfCard {
+  margin-bottom: 18px;
+  overflow: hidden;
+  position: relative;
+  border-color: var(--primary-border);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+.whatIfCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.whatIfHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 220px);
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 20px;
+}
+
+.whatIfEyebrow {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.whatIfHeader h2 {
+  font-size: 25px;
+  line-height: 1.2;
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.whatIfHeader p {
+  max-width: 720px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.scenarioMeter {
+  --risk-color: var(--primary);
+  --risk-score: 0%;
+  align-self: stretch;
+  border: 1px solid var(--primary-border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, var(--primary-soft));
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.scenarioMeterTop,
+.scenarioMeterMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.scenarioMeterTop span,
+.scenarioMeterMeta span {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.scenarioMeterTop strong {
+  color: var(--text-heading);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.scenarioMeterTrack {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(191, 219, 254, 0.8);
+  overflow: hidden;
+}
+
+.scenarioMeterTrack i {
+  display: block;
+  width: var(--risk-score);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--risk-color);
+  transition: width 240ms var(--ease-standard);
+}
+
+.scenarioMeterMeta b {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.scenarioSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0 18px;
+  margin: -6px 0 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.scenarioSummary span {
+  border: 1px solid var(--primary-border);
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-600);
+  font-size: 12px;
+  font-weight: 850;
+  padding: 6px 10px;
+}
+
+.scenarioMission {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(191, 219, 254, 0.8);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(239, 246, 255, 0.92), rgba(240, 253, 250, 0.86));
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.scenarioMission svg {
+  color: var(--primary);
+}
+
+.scenarioMission strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 14px;
+  font-weight: 950;
+  margin-bottom: 3px;
+}
+
+.scenarioMission span {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.scenarioDataPill {
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 9px 12px;
+  min-width: 128px;
+}
+
+.scenarioDataPill span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scenarioDataPill strong {
+  color: var(--primary-600);
+  font-size: 15px;
+  margin: 2px 0 0;
+}
+
+.whatIfGrid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(360px, 1.05fr);
+  gap: 0;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, rgba(239, 246, 255, 0.58));
+  overflow: hidden;
+}
+
+.scenarioControls,
+.simulationResult {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 18px;
+}
+
+.scenarioControls {
+  display: grid;
+  gap: 14px;
+  background: #ffffff;
+  border-right: 1px solid var(--border);
+}
+
+.scenarioControls label,
+.controlGroup {
+  display: grid;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.scenarioControls select {
+  width: 100%;
+  height: 46px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-heading);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 0 12px;
+  outline: none;
+}
+
+.controlRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.segmentedControl,
+.eventButtons {
+  display: grid;
+  gap: 8px;
+}
+
+.segmentedControl {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+  padding: 5px;
+}
+
+.segmentedControl button,
+.eventButtons button {
+  min-height: 38px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.segmentedControl button:hover,
+.eventButtons button:hover {
+  transform: none;
+}
+
+.segmentedControl .segmentActive,
+.eventButtons .eventActive {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+}
+
+.eventButtons {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.eventButtons button {
+  min-height: 54px;
+  background: #ffffff;
+  border-color: var(--border);
+}
+
+.simulationResult {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+}
+
+.riskResult {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.riskResult span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.riskResult strong {
+  display: block;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.confidencePill {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: var(--text-heading);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.breakdownList {
+  display: grid;
+  gap: 10px;
+}
+
+.breakdownTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.breakdownTop span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.breakdownTop strong {
+  color: var(--text-heading);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.breakdownTrack {
+  height: 7px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.breakdownTrack i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 240ms var(--ease-standard);
+}
+
+.whatIfAdvice {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border-radius: 14px;
+  background: var(--text-heading);
+  color: #e2e8f0;
+  padding: 14px;
+  line-height: 1.55;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.whatIfAdvice svg {
+  color: #60a5fa;
+}
+
+.whatIfGrid {
+  grid-template-columns: minmax(300px, 0.72fr) minmax(560px, 1.35fr) minmax(340px, 0.82fr);
+  grid-template-areas:
+    "controls map results";
+  align-items: start;
+}
+
+.scenarioControls {
+  grid-area: controls;
+  gap: 12px;
+  border-right: 1px solid var(--border);
+  border-bottom: 0;
+}
+
+.quickScenarioGrid,
+.weatherButtons,
+.visibilityButtons,
+.toggleGrid,
+.safetyButtons {
+  display: grid;
+  gap: 8px;
+}
+
+.quickScenarioGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-bottom: 4px;
+}
+
+.quickScenarioGrid button,
+.weatherButtons button,
+.visibilityButtons button,
+.toggleGrid button,
+.safetyButtons button {
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #ffffff;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.quickScenarioGrid button {
+  background: #f8fafc;
+  color: var(--text-heading);
+}
+
+.weatherButtons {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.visibilityButtons {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.toggleGrid,
+.safetyButtons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.safetyButtons {
+  grid-template-columns: 1fr;
+}
+
+.safetyButtons .safetyActive {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 118, 110, 0.18);
+}
+
+.eventButtons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.eventButtons button {
+  min-height: 46px;
+}
+
+.scenarioMapPanel {
+  grid-area: map;
+  min-width: 0;
+  border-right: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.98));
+  padding: 20px;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 14px;
+  align-content: start;
+}
+
+.scenarioMapHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.scenarioMapHeader span,
+.mapRiskBadge span,
+.resultMetrics span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scenarioMapHeader strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 20px;
+  font-weight: 950;
+  margin-top: 3px;
+}
+
+.mapStats {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mapStats span {
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.scenarioMapWrap {
+  position: relative;
+  height: 620px;
+  min-height: 620px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.scenarioMap {
+  width: 100%;
+  height: 100%;
+}
+
+.scenarioDivIcon {
+  background: transparent;
+  border: 0;
+}
+
+.scenarioMarker {
+  --marker-bg: #2563eb;
+  --marker-soft: rgba(37, 99, 235, 0.2);
+  --marker-border: rgba(37, 99, 235, 0.28);
+  position: relative;
+  width: 66px;
+  min-height: 40px;
+  border: 1px solid var(--marker-border);
+  border-radius: 15px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.84)),
+    var(--marker-soft);
+  box-shadow: 0 18px 34px var(--marker-soft), 0 10px 24px rgba(15, 23, 42, 0.14);
+  color: var(--text-heading);
+  display: grid;
+  place-items: center;
+  padding: 7px 8px 6px;
+  text-align: center;
+}
+
+.scenarioMarker::before {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  z-index: -1;
+  border-radius: 999px;
+  background: var(--marker-soft);
+  animation: scenarioPulse 2.4s ease-out infinite;
+}
+
+.scenarioMarker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 13px;
+  height: 13px;
+  border-right: 1px solid var(--marker-border);
+  border-bottom: 1px solid var(--marker-border);
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.scenarioMarker span {
+  color: var(--marker-bg);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.scenarioMarker strong {
+  color: var(--text-heading);
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.1;
+  margin-top: 3px;
+}
+
+.scenarioMarkerHigh {
+  --marker-bg: #ef4444;
+  --marker-soft: rgba(239, 68, 68, 0.24);
+  --marker-border: rgba(239, 68, 68, 0.34);
+}
+
+.scenarioMarkerMedium {
+  --marker-bg: #f97316;
+  --marker-soft: rgba(249, 115, 22, 0.22);
+  --marker-border: rgba(249, 115, 22, 0.34);
+}
+
+.scenarioMarkerLow {
+  --marker-bg: #2563eb;
+  --marker-soft: rgba(37, 99, 235, 0.2);
+  --marker-border: rgba(37, 99, 235, 0.28);
+}
+
+.scenarioMarkerClosed {
+  --marker-bg: #111827;
+  --marker-soft: rgba(15, 23, 42, 0.22);
+  --marker-border: rgba(15, 23, 42, 0.34);
+}
+
+@keyframes scenarioPulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.72);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.38);
+  }
+}
+
+.mapRiskBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 500;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 11px 12px;
+  min-width: 142px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.mapRiskBadge strong {
+  display: block;
+  font-size: 23px;
+  line-height: 1;
+  font-weight: 950;
+  margin-top: 4px;
+}
+
+.mapRiskBadge em {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  margin-top: 4px;
+}
+
+.mapLegendCompact {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 500;
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.mapLegendCompact span {
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text-heading);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+.mapLegendCompact i {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.legendDanger {
+  background: radial-gradient(circle, #ef4444 0 36%, rgba(239, 68, 68, 0.28) 37% 100%);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+
+.legendSafe {
+  background: #059669;
+}
+
+.legendClosed {
+  background: #111827;
+  border-radius: 4px;
+}
+
+.pressureRoadList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pressureRoadRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: #ffffff;
+  padding: 10px 12px;
+}
+
+.pressureRoadRow span {
+  color: var(--text-heading);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.pressureRoadRow strong {
+  font-size: 12px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.scenarioPopup {
+  display: grid;
+  gap: 3px;
+  min-width: 160px;
+}
+
+.scenarioPopup strong {
+  color: var(--text-heading);
+}
+
+.scenarioPopup span {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.simulationResult {
+  grid-area: results;
+  min-height: 100%;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  border-bottom: 0;
+}
+
+.resultSectionTitle {
+  color: var(--text-heading);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.beforeAfterPanel {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.beforeAfterGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.beforeAfterGrid div {
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 10px;
+}
+
+.beforeAfterGrid .afterCard {
+  background: rgba(240, 253, 250, 0.95);
+  border-color: rgba(20, 184, 166, 0.28);
+}
+
+.beforeAfterGrid span,
+.beforeAfterGrid em {
+  display: block;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.beforeAfterGrid strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 28px;
+  font-weight: 950;
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.beforeAfterPanel p {
+  color: #047857;
+  font-size: 12px;
+  font-weight: 950;
+  margin: 10px 0 0;
+}
+
+.beforeAfterPanel .noMeasureHint {
+  color: var(--text-muted);
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.resultMetrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.resultMetrics div {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.resultMetrics strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 14px;
+  font-weight: 950;
+  margin-top: 4px;
+}
+
+.dataConfidence {
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(191, 219, 254, 0.75);
+  border-radius: 14px;
+  background: #eff6ff;
+  padding: 12px;
+}
+
+.dataConfidence span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.dataConfidence strong {
+  color: var(--primary-600);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+@media (max-width: 1420px) {
+  .whatIfGrid {
+    grid-template-columns: minmax(310px, 0.74fr) minmax(560px, 1.26fr);
+    grid-template-areas:
+      "controls map"
+      "results map";
+  }
+
+  .simulationResult {
+    border-top: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 980px) {
+  .whatIfGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "controls"
+      "results"
+      "map";
+  }
+
+  .scenarioControls,
+  .scenarioMapPanel {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scenarioMission {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .scenarioDataPill {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .whatIfHeader,
+  .controlRow,
+  .segmentedControl,
+  .eventButtons,
+  .quickScenarioGrid,
+  .weatherButtons,
+  .visibilityButtons,
+  .toggleGrid,
+  .resultMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .scenarioMeter {
+    min-height: 112px;
+  }
+
+  .scenarioMapWrap {
+    height: 480px;
+    min-height: 480px;
+  }
+
+  .pressureRoadList {
+    grid-template-columns: 1fr;
+  }
+}

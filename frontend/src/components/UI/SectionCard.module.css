@@ -1,0 +1,35 @@
+.card {
+  background: var(--surface-raised);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: var(--text-heading);
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 850;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .title {
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding: 14px;
+  }
+}

@@ -1,0 +1,361 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.header h1 {
+  font-size: 30px;
+  line-height: 1.12;
+  font-weight: 950;
+}
+
+.header p {
+  max-width: 720px;
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.kicker {
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  color: #dc2626;
+  margin-bottom: 6px;
+}
+
+.refresh {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-heading);
+  border-radius: 15px;
+  padding: 12px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.metric {
+  background: var(--surface-raised);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  box-shadow: var(--shadow-card);
+}
+
+.metricIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-weight: 850;
+  margin-bottom: 2px;
+}
+
+.metricValue {
+  font-size: 25px;
+  font-weight: 950;
+  color: var(--text-heading);
+  line-height: 1.1;
+}
+
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.listHeader h2 {
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.listHeader p {
+  margin-top: 3px;
+  color: var(--text-muted);
+}
+
+.liveChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-600);
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.sosList {
+  display: grid;
+  gap: 14px;
+}
+
+.sosCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 16px;
+}
+
+.cardMain {
+  min-width: 0;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.ticket {
+  font-size: 15px;
+  font-weight: 950;
+  color: var(--text-heading);
+}
+
+.location {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 750;
+  color: var(--text-muted);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.detailGrid span {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 2px;
+}
+
+.detailGrid strong {
+  display: block;
+  font-size: 13px;
+  color: var(--text-heading);
+  overflow-wrap: anywhere;
+}
+
+.progressSteps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.progressStep {
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.progressStep span {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #e2e8f0;
+  font-size: 11px;
+  font-weight: 950;
+  flex-shrink: 0;
+}
+
+.progressStep strong {
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.progressStepActive {
+  border-color: var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-600);
+}
+
+.progressStepActive span {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.description {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.miniMap {
+  position: relative;
+  min-height: 190px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  min-height: 190px;
+}
+
+.mapStatus {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 7px 9px;
+  font-size: 11px;
+  font-weight: 950;
+  box-shadow: var(--shadow-soft);
+}
+
+.emptyState {
+  min-height: 260px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.emptyState strong {
+  color: var(--text-heading);
+  font-size: 18px;
+}
+
+.accessState {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.accessIcon {
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  color: #dc2626;
+  background: #fef2f2;
+  flex-shrink: 0;
+}
+
+.accessState h1 {
+  font-size: 24px;
+  font-weight: 950;
+  margin-bottom: 8px;
+}
+
+.accessState p {
+  max-width: 620px;
+  margin-bottom: 18px;
+}
+
+.accessState button {
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  border-radius: 15px;
+  padding: 13px 18px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+}
+
+:global(.sos-mini-marker__dot) {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, 0.92),
+    0 12px 24px rgba(15, 23, 42, 0.28);
+}
+
+@media (max-width: 1180px) {
+  .sosCard {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .metrics,
+  .detailGrid,
+  .progressSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .listHeader,
+  .accessState {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

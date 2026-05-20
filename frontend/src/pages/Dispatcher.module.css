@@ -1,0 +1,369 @@
+.metricTileStyle {
+  background: var(--surface-raised);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  box-shadow: var(--shadow-card);
+}
+
+.metricLabelStyle {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-weight: 850;
+  margin-bottom: 2px;
+}
+
+.metricValueStyle {
+  font-size: 25px;
+  font-weight: 950;
+  color: var(--text-heading);
+  line-height: 1.1;
+}
+
+.dispatchHeaderStyle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dispatcherStyle1 {
+  min-width: 0;
+}
+
+.ticketStyle {
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--text-heading);
+}
+
+.placeStyle {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detailGridStyle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detailLabelStyle {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 2px;
+}
+
+.dispatcherStyle2 {
+  color: #dc2626;
+}
+
+.buttonRowStyle {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.smallActionButtonStyle {
+  border: none;
+  background: var(--primary-soft);
+  color: var(--primary-600);
+  border-radius: 12px;
+  padding: 9px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.smallActionButtonStyle:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+  transform: none;
+}
+
+.callActionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.callActionButtonActive {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.resolveActionButton {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.pageHeaderStyle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.kickerStyle {
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  color: #dc2626;
+  margin-bottom: 6px;
+}
+
+.h1Style {
+  font-size: 30px;
+  line-height: 1.12;
+  font-weight: 950;
+}
+
+.leadStyle {
+  margin-top: 8px;
+  max-width: 660px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.refreshButtonStyle {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-heading);
+  border-radius: 15px;
+  padding: 12px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.metricGridStyle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.contentGridStyle {
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) minmax(320px, 420px);
+  gap: 18px;
+  align-items: start;
+}
+
+.dispatcherStyle3 {
+  padding: 0;
+  overflow: hidden;
+}
+
+.mapHeaderStyle {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionTitleStyle {
+  font-size: 18px;
+  font-weight: 950;
+  color: var(--text-heading);
+}
+
+.sectionSubtitleStyle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.liveBadgeStyle {
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+}
+
+.mapWrapStyle {
+  height: 620px;
+  min-height: 520px;
+}
+
+.dispatcherStyle4 {
+  width: 100%;
+  height: 100%;
+}
+
+.dispatcherStyle5 {
+  min-width: 210px;
+}
+
+.dispatcherStyle6 {
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.dispatcherStyle7 {
+  margin-top: 8px;
+  color: #64748b;
+}
+
+.queueHeaderStyle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.queueListStyle {
+  display: grid;
+  gap: 12px;
+  max-height: 650px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.emptyStateStyle {
+  min-height: 180px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-weight: 750;
+}
+
+.accessDenied {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: left;
+}
+
+.accessIcon {
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  color: #dc2626;
+  background: #fef2f2;
+  flex-shrink: 0;
+}
+
+.accessTitle {
+  font-size: 24px;
+  font-weight: 950;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.accessText {
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.accessButton {
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  border-radius: 15px;
+  padding: 13px 18px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+}
+
+@media (max-width: 720px) {
+  .accessDenied {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1180px) {
+  .contentGridStyle {
+    grid-template-columns: 1fr;
+  }
+
+  .metricGridStyle {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .metricGridStyle,
+  .detailGridStyle {
+    grid-template-columns: 1fr;
+  }
+
+  .contentGridStyle {
+    gap: 14px;
+  }
+
+  .dispatchHeaderStyle,
+  .mapHeaderStyle,
+  .queueHeaderStyle {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .mapWrapStyle {
+    height: 430px;
+    min-height: 430px;
+  }
+
+  .queueListStyle {
+    max-height: none;
+  }
+
+  .metricTileStyle {
+    padding: 16px;
+  }
+
+  .buttonRowStyle > button {
+    flex: 1 1 140px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .h1Style {
+    font-size: 24px;
+  }
+
+  .mapWrapStyle {
+    height: 340px;
+    min-height: 340px;
+  }
+}

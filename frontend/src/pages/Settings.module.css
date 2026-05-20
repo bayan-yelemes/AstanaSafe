@@ -1,0 +1,121 @@
+.settingsStyle1 {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.settingsStyle2 {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.settingsStyle3 {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.settingsStyle4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.labelStyle {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.inputStyle {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text-heading);
+  font-weight: 650;
+  font-size: 14px;
+  outline: none;
+}
+
+.settingsStyle5 {
+  margin-top: 16px;
+}
+
+.settingsStyle6 {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.settingsStyle7 {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondaryBtn {
+  border: none;
+  background: var(--surface-soft);
+  color: var(--text);
+  padding: 12px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.primaryBtn {
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+}
+
+.settingsStyle8 {
+  margin-top: 14px;
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.settingsStyle8[data-tone="danger"] {
+  color: #ef4444;
+}
+
+.settingsStyle9 {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.settingsStyle10 {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.settingsStyle11 {
+  display: grid;
+  gap: 14px;
+}
+
+.settingsStyle12 {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,768 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+:root {
+  --font-sans:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+  --surface-raised: rgba(255, 255, 255, 0.92);
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #334155;
+  --text-muted: #64748b;
+  --text-soft: #94a3b8;
+  --text-heading: #0f172a;
+  --primary: #2563eb;
+  --primary-600: #1d4ed8;
+  --primary-soft: #eff6ff;
+  --primary-border: #bfdbfe;
+  --accent: #8b5cf6;
+  --accent-soft: #f5f3ff;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --warning: #f59e0b;
+  --warning-soft: #fff7ed;
+  --success: #10b981;
+  --success-soft: #ecfdf5;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 18px 48px rgba(15, 23, 42, 0.07);
+  --shadow-focus: 0 0 0 4px rgba(37, 99, 235, 0.14);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text);
+  background: var(--bg);
+  font: 15px/1.55 var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modal-backdrop-enter {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0) saturate(100%);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(16px) saturate(115%);
+  }
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdown-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.025);
+    opacity: 0.86;
+  }
+}
+
+@keyframes sos-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.55);
+    opacity: 0.9;
+  }
+
+  72% {
+    transform: translate(-50%, -50%) scale(1.9);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes sos-core {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.14);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(239, 246, 255, 0.92) 0%,
+      rgba(248, 250, 252, 1) 42%
+    ),
+    var(--bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  min-width: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+button {
+  transition:
+    transform 220ms var(--ease-standard),
+    box-shadow 220ms var(--ease-standard),
+    background 220ms var(--ease-standard),
+    border-color 220ms var(--ease-standard),
+    color 220ms var(--ease-standard),
+    opacity 220ms var(--ease-standard);
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+input,
+select,
+textarea {
+  transition:
+    border-color 200ms var(--ease-standard),
+    box-shadow 200ms var(--ease-standard),
+    background 200ms var(--ease-standard),
+    color 200ms var(--ease-standard);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--border-strong) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-heading);
+  letter-spacing: 0;
+}
+
+p {
+  color: var(--text-muted);
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr);
+  min-height: 100vh;
+  background: transparent;
+  transition: grid-template-columns 320ms var(--ease-spring);
+}
+
+.app-shell[data-collapsed="true"] {
+  grid-template-columns: 96px minmax(0, 1fr);
+}
+
+.app-main {
+  grid-column: 2;
+  min-width: 0;
+  width: 100%;
+  padding: 22px;
+  overflow-x: hidden;
+}
+
+.app-main > div {
+  animation: page-enter 420ms var(--ease-spring) both;
+}
+
+.app-sidebar {
+  animation: page-enter 460ms var(--ease-spring) both;
+}
+
+.app-topbar {
+  position: relative;
+  z-index: 3000;
+  overflow: visible;
+  animation: card-enter 420ms var(--ease-spring) both;
+}
+
+.surface-card,
+.stat-card,
+.dashboard-summary-grid > *,
+.dashboard-content-grid > *,
+.analytics-metric-grid > *,
+.analytics-chart-grid > *,
+.reports-stat-grid > *,
+.forecast-box-grid > *,
+.forecast-content-grid > *,
+.account-filter-grid > * {
+  position: relative;
+  z-index: 1;
+  animation: card-enter 480ms var(--ease-spring) both;
+  transition:
+    transform 220ms var(--ease-standard),
+    box-shadow 220ms var(--ease-standard),
+    border-color 220ms var(--ease-standard),
+    background 220ms var(--ease-standard);
+}
+
+.surface-card:hover,
+.stat-card:hover,
+.analytics-chart-grid > *:hover,
+.reports-stat-grid > *:hover {
+  z-index: 2;
+  transform: translateY(-3px);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.1) !important;
+}
+
+.dashboard-summary-grid > *:nth-child(1),
+.analytics-metric-grid > *:nth-child(1),
+.reports-stat-grid > *:nth-child(1),
+.forecast-box-grid > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.dashboard-summary-grid > *:nth-child(2),
+.analytics-metric-grid > *:nth-child(2),
+.reports-stat-grid > *:nth-child(2),
+.forecast-box-grid > *:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.dashboard-summary-grid > *:nth-child(3),
+.analytics-metric-grid > *:nth-child(3),
+.reports-stat-grid > *:nth-child(3),
+.forecast-box-grid > *:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.dashboard-summary-grid > *:nth-child(4),
+.analytics-metric-grid > *:nth-child(4),
+.forecast-box-grid > *:nth-child(4) {
+  animation-delay: 190ms;
+}
+
+.modal-backdrop {
+  animation: modal-backdrop-enter 220ms var(--ease-standard) both;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  backdrop-filter: blur(16px) saturate(115%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+}
+
+.motion-modal {
+  animation: modal-enter 360ms var(--ease-spring) both;
+  transform-origin: center;
+}
+
+.motion-dropdown {
+  z-index: 6500;
+  animation: dropdown-enter 180ms var(--ease-spring) both;
+  transform-origin: top center;
+}
+
+.leaflet-marker-icon,
+.leaflet-interactive {
+  transition:
+    opacity 220ms var(--ease-standard),
+    transform 220ms var(--ease-standard),
+    stroke-width 220ms var(--ease-standard);
+}
+
+.dashboard-summary-grid {
+  grid-template-columns: repeat(3, minmax(180px, 0.68fr)) minmax(300px, 1.9fr);
+}
+
+.dashboard-content-grid {
+  grid-template-columns: minmax(520px, 1fr) minmax(280px, 320px);
+}
+
+.analytics-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.analytics-chart-grid {
+  grid-template-columns: minmax(420px, 1.95fr) minmax(280px, 0.95fr);
+}
+
+.reports-stat-grid {
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+}
+
+.forecast-box-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.forecast-content-grid {
+  grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+}
+
+.account-filter-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.topbar-datepicker input,
+.account-datepicker-wrapper input,
+.reports-datepicker-wrapper input {
+  font-family: var(--font-sans);
+  caret-color: transparent;
+  user-select: none;
+}
+
+.topbar-datepicker,
+.account-datepicker-wrapper,
+.reports-datepicker-wrapper,
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar-datepicker input {
+  width: 132px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.app-datepicker-popper,
+.react-datepicker-popper {
+  z-index: 7000 !important;
+}
+
+.app-datepicker-popper[data-placement^="bottom"],
+.react-datepicker-popper[data-placement^="bottom"] {
+  margin-top: 8px;
+}
+
+.react-datepicker {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card) !important;
+  overflow: hidden;
+  font-family: var(--font-sans) !important;
+  animation: dropdown-enter 180ms var(--ease-spring) both;
+}
+
+.react-datepicker__header {
+  background: var(--primary-soft) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: var(--primary) !important;
+  border-radius: 10px !important;
+}
+
+.leaflet-container {
+  font-family: var(--font-sans);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card) !important;
+  animation: modal-enter 220ms var(--ease-spring) both;
+}
+
+.sos-dispatch-marker {
+  position: relative;
+}
+
+.sos-dispatch-marker__pulse,
+.sos-dispatch-marker__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.sos-dispatch-marker__pulse {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #dc2626;
+  background: rgba(220, 38, 38, 0.12);
+  animation: sos-ring 1.55s var(--ease-standard) infinite;
+}
+
+.sos-dispatch-marker__core {
+  width: 16px;
+  height: 16px;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.92),
+    0 12px 26px rgba(220, 38, 38, 0.34);
+  animation: sos-core 1.55s var(--ease-standard) infinite;
+}
+
+.react-datepicker__day {
+  transition:
+    background 160ms var(--ease-standard),
+    color 160ms var(--ease-standard),
+    transform 160ms var(--ease-standard);
+}
+
+.react-datepicker__day:hover {
+  transform: translateY(-1px);
+}
+
+.report-action-button,
+.react-datepicker__navigation,
+.leaflet-control-zoom a {
+  transition:
+    transform 200ms var(--ease-standard),
+    box-shadow 200ms var(--ease-standard),
+    background 200ms var(--ease-standard),
+    color 200ms var(--ease-standard);
+}
+
+.report-action-button:hover,
+.leaflet-control-zoom a:hover {
+  transform: translateY(-2px);
+}
+
+[aria-busy="true"],
+.is-loading {
+  animation: soft-pulse 1.6s var(--ease-standard) infinite;
+}
+
+@media (max-width: 1180px) {
+  .app-shell,
+  .app-shell[data-collapsed="true"] {
+    grid-template-columns: 1fr;
+  }
+
+  .app-sidebar {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 12px 16px !important;
+    display: grid !important;
+    gap: 12px !important;
+    justify-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  .app-main {
+    grid-column: 1;
+    padding: 16px;
+  }
+
+  .app-sidebar > button:first-child,
+  .app-sidebar > a,
+  .app-sidebar > button:not(:first-child) {
+    display: none !important;
+  }
+
+  .app-sidebar > div:first-of-type {
+    display: grid !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+  }
+
+  .app-sidebar > div:first-of-type > div:first-child {
+    margin-bottom: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .app-sidebar [class*="sidebarStyle5"] {
+    max-height: none !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    padding: 0 0 4px !important;
+    scrollbar-width: thin;
+  }
+
+  .app-sidebar [class*="navGroup"] {
+    display: flex !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+  }
+
+  .app-sidebar [class*="navGroupTitle"] {
+    display: none !important;
+  }
+
+  .app-sidebar [class*="navGroupItems"] {
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .app-sidebar [class*="sidebarStyle6"],
+  .app-sidebar [class*="sidebarStyle9"],
+  .app-sidebar [class*="sidebarStyle15"] {
+    display: none !important;
+  }
+
+  .dashboard-summary-grid,
+  .dashboard-content-grid,
+  .analytics-chart-grid,
+  .forecast-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-metric-grid,
+  .reports-stat-grid,
+  .forecast-box-grid,
+  .account-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1180px) {
+  .dispatcher-content-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .dispatcher-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    font-size: 14px;
+  }
+
+  .app-main {
+    padding: 12px;
+  }
+
+  .analytics-metric-grid,
+  .reports-stat-grid,
+  .forecast-box-grid,
+  .account-filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-action-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    background: var(--surface-soft) !important;
+    color: var(--text-heading) !important;
+    padding: 0 12px !important;
+  }
+
+  .report-action-label {
+    max-width: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-main {
+    padding: 10px;
+  }
+
+  .app-main > div {
+    min-width: 0;
+  }
+
+  .app-sidebar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 5000 !important;
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .app-sidebar > div:first-of-type {
+    gap: 10px !important;
+  }
+
+  .app-sidebar > div:first-of-type > div:first-child {
+    margin-bottom: 0 !important;
+  }
+
+  .app-sidebar [class*="sidebarStyle5"] {
+    margin: 0 -2px !important;
+    padding: 0 2px 6px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-sidebar [class*="navGroupItems"] a {
+    min-width: 64px !important;
+    padding: 11px 12px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-sidebar [class*="navGroupItems"] a span {
+    max-width: 116px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .app-topbar {
+    margin-bottom: 14px !important;
+  }
+
+  .surface-card,
+  .stat-card {
+    border-radius: 16px;
+  }
+
+  .react-datepicker,
+  .react-datepicker-popper {
+    max-width: calc(100vw - 16px);
+  }
+
+  .leaflet-control-attribution {
+    max-width: 72vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-main {
+    padding: 8px;
+  }
+
+  .app-sidebar {
+    padding: 8px 10px !important;
+  }
+
+  .app-sidebar [class*="navGroupItems"] a {
+    min-width: 58px !important;
+    padding: 10px !important;
+  }
+
+  .topbar-datepicker input {
+    width: 112px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

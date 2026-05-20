@@ -1,0 +1,371 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.header h1 {
+  font-size: 30px;
+  line-height: 1.12;
+  font-weight: 950;
+}
+
+.header p {
+  max-width: 760px;
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.sourceNote {
+  display: inline-flex;
+  max-width: 840px;
+  margin-top: 12px;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-600);
+  border-radius: 14px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.kicker {
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  color: #2563eb;
+  margin-bottom: 6px;
+}
+
+.refresh {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-heading);
+  border-radius: 15px;
+  padding: 12px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.controlsCard {
+  margin-bottom: 18px;
+}
+
+.controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.controlLabel,
+.periodSelect span {
+  display: block;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.districtTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.districtTab {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  border-radius: 13px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.districtTabActive {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.22);
+}
+
+.periodSelect {
+  min-width: 190px;
+}
+
+.periodSelect select {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-heading);
+  border-radius: 14px;
+  padding: 11px 13px;
+  font-weight: 850;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.metric {
+  background: var(--surface-raised);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  box-shadow: var(--shadow-card);
+}
+
+.metricIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-weight: 850;
+  margin-bottom: 2px;
+}
+
+.metricValue {
+  font-size: 23px;
+  font-weight: 950;
+  color: var(--text-heading);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) minmax(320px, 420px);
+  gap: 18px;
+  align-items: start;
+}
+
+.profileCard {
+  min-height: 560px;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.profileKicker {
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 4px;
+}
+
+.profileHeader h2 {
+  font-size: 28px;
+  font-weight: 950;
+}
+
+.riskPill {
+  border-radius: 999px;
+  background: var(--warning-soft);
+  color: #d97706;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.recommendationBox {
+  border: 1px solid var(--primary-border);
+  background: var(--primary-soft);
+  color: var(--primary-600);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.recommendationBox strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 15px;
+  margin-bottom: 3px;
+}
+
+.recommendationBox p {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.chartHeader {
+  margin-bottom: 12px;
+}
+
+.chartHeader h3 {
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.chartHeader p {
+  margin-top: 3px;
+  font-size: 13px;
+}
+
+.chartWrap {
+  height: 360px;
+}
+
+.sideStack {
+  display: grid;
+  gap: 18px;
+}
+
+.sideHeader {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.sideHeader h2 {
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.rankList,
+.weatherList {
+  display: grid;
+  gap: 10px;
+}
+
+.rankedItem {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 11px;
+}
+
+.rank {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-soft);
+  color: var(--text-heading);
+  font-weight: 950;
+}
+
+.rankBody {
+  min-width: 0;
+}
+
+.rankBody strong {
+  display: block;
+  color: var(--text-heading);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rankBody span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.weatherItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.weatherItem span {
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+.weatherItem strong {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--success-soft);
+  color: #059669;
+}
+
+.emptyMini {
+  min-height: 120px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .profileHeader,
+  .recommendationBox {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,331 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 7600;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.52)),
+    rgba(248, 250, 252, 0.62);
+  backdrop-filter: blur(18px) saturate(112%);
+  -webkit-backdrop-filter: blur(18px) saturate(112%);
+  animation: call-backdrop-enter 180ms var(--ease-standard) both;
+}
+
+.phoneFrame {
+  width: min(390px, calc(100vw - 30px));
+  min-height: min(720px, calc(100dvh - 30px));
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  border-radius: 34px;
+  padding: 12px;
+  background: #0f172a;
+  box-shadow:
+    0 34px 84px rgba(15, 23, 42, 0.34),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: phone-enter 260ms var(--ease-spring) both;
+}
+
+.statusBar {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.statusBar span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.callScreen {
+  min-height: calc(min(720px, calc(100dvh - 30px)) - 62px);
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr auto;
+  justify-items: center;
+  align-items: start;
+  gap: 16px;
+  padding: 34px 22px 24px;
+  border-radius: 25px;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 56%, #eef2f7 100%),
+    #ffffff;
+  overflow: hidden;
+}
+
+.callMeta {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.84);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 156px;
+  height: 156px;
+  display: grid;
+  place-items: center;
+  margin-top: 16px;
+}
+
+.avatarRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 2px solid rgba(220, 38, 38, 0.24);
+  animation: phone-ring 1.8s var(--ease-standard) infinite;
+}
+
+.avatar {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background:
+    linear-gradient(145deg, #dc2626 0%, #f97316 100%),
+    #dc2626;
+  box-shadow:
+    0 22px 44px rgba(220, 38, 38, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  font-size: 31px;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.overlay[data-state="active"] .avatar {
+  background:
+    linear-gradient(145deg, #059669 0%, #2563eb 100%),
+    #059669;
+  box-shadow:
+    0 22px 44px rgba(5, 150, 105, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.overlay[data-state="active"] .avatarRing {
+  border-color: rgba(5, 150, 105, 0.24);
+  animation-duration: 2.4s;
+}
+
+.title {
+  width: 100%;
+  margin-top: 6px;
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 950;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  width: min(100%, 310px);
+  min-height: 44px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 750;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.waveRow {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.waveRow span {
+  width: 5px;
+  height: 12px;
+  border-radius: 999px;
+  background: #dc2626;
+  animation: voice-wave 860ms var(--ease-standard) infinite;
+}
+
+.waveRow span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.waveRow span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.waveRow span:nth-child(4) {
+  animation-delay: 360ms;
+}
+
+.actions {
+  width: 100%;
+  align-self: end;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 28px;
+  min-height: 104px;
+  padding-top: 18px;
+}
+
+.roundButton {
+  width: 78px;
+  min-width: 78px;
+  border: none;
+  background: transparent;
+  color: #475569;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.roundButton svg,
+.buttonGlyph {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.18);
+}
+
+.roundButton span {
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.acceptButton svg {
+  background: #16a34a;
+  padding: 18px;
+}
+
+.declineButton svg {
+  background: #dc2626;
+  padding: 18px;
+}
+
+.secondaryButton svg,
+.secondaryButton .buttonGlyph {
+  color: #0f172a;
+  background: #e2e8f0;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+@keyframes call-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes phone-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes phone-ring {
+  0% {
+    opacity: 0.82;
+    transform: scale(0.78);
+  }
+
+  72% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes voice-wave {
+  0%,
+  100% {
+    height: 10px;
+    opacity: 0.62;
+  }
+
+  50% {
+    height: 28px;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .overlay {
+    padding: 0;
+  }
+
+  .phoneFrame {
+    width: 100vw;
+    min-height: 100dvh;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .statusBar {
+    height: 42px;
+    padding: 0 18px;
+  }
+
+  .callScreen {
+    min-height: calc(100dvh - 42px);
+    border-radius: 0;
+    padding: 34px 20px 24px;
+  }
+
+  .title {
+    font-size: 25px;
+  }
+
+  .avatarWrap {
+    width: 144px;
+    height: 144px;
+  }
+
+  .avatar {
+    width: 110px;
+    height: 110px;
+  }
+
+  .actions {
+    gap: 22px;
+  }
+}

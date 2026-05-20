@@ -1,0 +1,53 @@
+# Environment files
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+venv-win/
+backend/venv/
+backend/venv-win/
+osm-venv/
+
+# Node / Vite
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+dist-ssr/
+
+# Local data and generated media
+*.db
+*.sqlite
+*.sqlite3
+*.gpkg
+*.pbf
+*.mp4
+*.zip
+backend/data/ДТП.geojson
+roadvision_frames/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
