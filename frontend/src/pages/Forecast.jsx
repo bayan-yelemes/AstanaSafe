@@ -282,12 +282,12 @@ const SCENARIO_PRESETS = [
 ];
 
 const SCENARIO_DISTRICTS = {
-  Almaty: [51.146, 71.486],
-  Esil: [51.109, 71.425],
-  Saryarka: [51.184, 71.405],
-  Nura: [51.129, 71.382],
-  Baikonur: [51.173, 71.463],
-  Saraishyk: [51.098, 71.376],
+  Almaty: [51.130417, 71.498722],
+  Esil: [51.099306, 71.454139],
+  Saryarka: [51.176694, 71.357194],
+  Nura: [51.124639, 71.406694],
+  Baikonur: [51.177722, 71.453111],
+  Saraishyk: [51.114833, 71.495139],
 };
 
 const SCENARIO_ROADS = [
