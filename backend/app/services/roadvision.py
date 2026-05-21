@@ -1223,6 +1223,7 @@ def _build_gemini_prompt(
     location_name: Optional[str],
     language: str = "ru",
 ) -> str:
+    language_key = (language or "ru").lower()
     scenario_hint = SCENARIO_PROFILES.get(scenario)
     scenario_title = (
         scenario_hint["title"]
@@ -1230,6 +1231,18 @@ def _build_gemini_prompt(
         else "Не задан: определить тип события по видео."
     )
     target_language = _roadvision_language_name(language)
+    review_required_label = {
+        "en": "Review required",
+        "kz": "Тексеру қажет",
+        "kk": "Тексеру қажет",
+        "ru": "Требуется проверка",
+    }.get(language_key, "Требуется проверка")
+    vehicle_a_example_label = {
+        "en": "Vehicle A (dashcam)",
+        "kz": "Vehicle A (видеотіркеуіш)",
+        "kk": "Vehicle A (видеотіркеуіш)",
+        "ru": "Vehicle A (регистратор)",
+    }.get(language_key, "Vehicle A (регистратор)")
 
     return f"""
 You are RoadVision AI, a traffic video forensic assistant for Astana.
@@ -1252,7 +1265,7 @@ Perspective and participant labeling rules:
 Important legal rule:
 - Do NOT decide legal guilt.
 - Use "participant_with_violation_signs" and "probable_cause" only.
-- If a license plate is not clearly legible, set plate to "Требуется проверка", plate_confidence to 0, and plate_status to "manual_review".
+- If a license plate is not clearly legible, set plate to "{review_required_label}", plate_confidence to 0, and plate_status to "manual_review".
 - Do not copy placeholder numbers from the schema.
 - The selected scenario is only an operator hypothesis. Override it when the video shows a different event.
 - Build chronology from visible video evidence, not from the scenario template.
@@ -1298,8 +1311,8 @@ Return this exact JSON shape:
   "participants": [
     {{
       "id": "A",
-      "label": "Vehicle A (регистратор)",
-      "plate": "Требуется проверка",
+      "label": "{vehicle_a_example_label}",
+      "plate": "{review_required_label}",
       "plate_confidence": 0,
       "plate_status": "manual_review | ai_detected",
       "movement": "{target_language} movement description; for Vehicle A in dashcam describe the camera vehicle",

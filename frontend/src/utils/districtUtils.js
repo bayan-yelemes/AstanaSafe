@@ -58,6 +58,7 @@ function normalizeDistrictName(raw) {
 
   if (
     lower.includes("есил") ||
+    lower.includes("есіл") ||
     lower.includes("esil") ||
     lower.includes("yesil") ||
     lower.includes("есиль")
@@ -69,7 +70,11 @@ function normalizeDistrictName(raw) {
     return "Almaty";
   }
 
-  if (lower.includes("сарыар") || lower.includes("saryarka")) {
+  if (
+    lower.includes("сарыар") ||
+    lower.includes("сарыарқа") ||
+    lower.includes("saryarka")
+  ) {
     return "Saryarka";
   }
 
@@ -82,12 +87,13 @@ function normalizeDistrictName(raw) {
     return "Baikonur";
   }
 
-  if (lower.includes("нура") || lower.includes("nura")) {
+  if (lower.includes("нура") || lower.includes("нұра") || lower.includes("nura")) {
     return "Nura";
   }
 
   if (
     lower.includes("сарайш") ||
+    lower.includes("сарайшық") ||
     lower.includes("saraishyk") ||
     lower.includes("sarayshyk")
   ) {

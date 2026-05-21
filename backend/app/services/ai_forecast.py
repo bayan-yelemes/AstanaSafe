@@ -234,6 +234,7 @@ def build_summary(db: Session, date: Optional[str] = None):
 
 
 def fallback_forecast(summary: dict, lang: str = "ru"):
+    lang = (lang or "ru").lower()
     risk_level = summary["risk_level"]
     busiest = summary["busiest_district"]
     safest = summary["safest_district"]
@@ -311,7 +312,9 @@ def fallback_forecast(summary: dict, lang: str = "ru"):
             "night": {"risk": "LOW", "text": L["no_data_text"]},
             "danger_zones": [],
             "risk_level": "LOW",
-            "insight": "Прогноз ожидает накопления реальных данных.",
+            "reasoning": L["risk_reason"],
+            "recommendation": L["recommend_collect"],
+            "insight": L["waiting_data"],
         }
 
     if risk_level == "LOW":
@@ -373,6 +376,7 @@ def ask_gemini_json(prompt: str, lang: str = "ru"):
     if not GEMINI_API_KEY or genai is None:
         return None
     
+    lang = (lang or "ru").lower()
     lang_names = {"kz": "Kazakh", "ru": "Russian", "en": "English"}
     target_lang = lang_names.get(lang, "Russian")
 
@@ -381,7 +385,12 @@ def ask_gemini_json(prompt: str, lang: str = "ru"):
         model = genai.GenerativeModel(GEMINI_MODEL)
         
         # Adding JSON instruction and target language requirement
-        full_prompt = f"{prompt}\n\nIMPORTANT: Response MUST be in {target_lang} language. Return only raw JSON."
+        full_prompt = (
+            f"{prompt}\n\n"
+            f"IMPORTANT: Response MUST be in {target_lang} language. "
+            "Translate every human-readable JSON value, including explanations, "
+            "recommendations, titles, and zone descriptions. Return only raw JSON."
+        )
         
         response = model.generate_content(
             full_prompt,
