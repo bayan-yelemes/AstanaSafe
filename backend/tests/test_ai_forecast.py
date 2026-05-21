@@ -29,6 +29,8 @@ def test_fallback_forecast_returns_complete_shape_without_data():
 
     assert forecast["risk_level"] == "LOW"
     assert forecast["danger_zones"] == []
+    assert forecast["insight"] == "Forecast is waiting for more real data."
+    assert forecast["recommendation"].startswith("Continue collecting")
     assert set(["morning", "afternoon", "evening", "night"]).issubset(forecast)
 
 

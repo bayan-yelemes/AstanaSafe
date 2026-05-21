@@ -477,6 +477,282 @@ function formatPercent(value) {
   return `${Math.round(Number(value || 0))}%`;
 }
 
+const ROADVISION_EN_TEXT = new Map([
+  ["Требуется проверка", "Review required"],
+  ["Не назначен", "Not assigned"],
+  ["Vehicle A (регистратор)", "Vehicle A (dashcam)"],
+  ["Vehicle B (белый седан впереди)", "Vehicle B (white sedan ahead)"],
+  ["автомобиль с видеорегистратором", "dashcam vehicle"],
+  ["попутный маневрирующий автомобиль", "same-direction maneuvering vehicle"],
+  ["основной поток", "main traffic flow"],
+  ["маневрирующий участник", "maneuvering participant"],
+  ["ДТП при резком перестроении белого седана направо перед регистратором", "Crash during a sharp right merge by the white sedan in front of the dashcam vehicle"],
+  ["движется прямо по правой полосе, когда белый седан с левой полосы смещается направо перед капотом", "moves straight in the right lane while the white sedan from the left lane moves right in front of the hood"],
+  ["плавное сближение, затем резкое торможение из-за перестроения белого седана справа перед регистратором", "gradual closing distance, then hard braking as the white sedan merges right in front of the dashcam vehicle"],
+  ["движется с левой полосы и резко перестраивается/поворачивает направо перед Vehicle A", "moves from the left lane and sharply merges/turns right in front of Vehicle A"],
+  ["резкое боковое смещение вправо без безопасного интервала перед контактом", "sharp lateral move to the right without a safe gap before contact"],
+  ["признаки опасного резкого перестроения/поворота направо перед автомобилем с регистратором", "signs of a dangerous sharp lane change/right turn in front of the dashcam vehicle"],
+  ["Начало сближения", "Closing distance begins"],
+  ["Vehicle A движется за белым седаном Vehicle B; расстояние между ними постепенно сокращается.", "Vehicle A follows the white sedan Vehicle B; the distance between them gradually decreases."],
+  ["белый седан находится непосредственно перед капотом регистратора", "the white sedan is directly in front of the dashcam hood"],
+  ["Белый седан готовится к смещению", "White sedan prepares to move"],
+  ["Vehicle B находится перед регистратором левее траектории Vehicle A и начинает менять положение относительно полосы.", "Vehicle B is ahead of the dashcam vehicle, left of Vehicle A's path, and starts changing its lane position."],
+  ["белый седан впереди расположен левее траектории регистратора", "the white sedan ahead is positioned left of the dashcam vehicle's path"],
+  ["Резкий поворот направо", "Sharp right turn"],
+  ["Когда Vehicle A подъезжает вперед, белый седан Vehicle B резко смещается с левой полосы направо и перекрывает путь регистратору.", "As Vehicle A moves forward, the white sedan Vehicle B sharply moves from the left lane to the right and blocks the dashcam vehicle's path."],
+  ["Vehicle B оказывается под углом перед капотом и входит в правую траекторию Vehicle A", "Vehicle B appears angled in front of the hood and enters Vehicle A's right-side path"],
+  ["Момент ДТП", "Crash moment"],
+  ["Vehicle B пересекает траекторию Vehicle A перед капотом, происходит контакт с автомобилем-регистратором.", "Vehicle B crosses Vehicle A's path in front of the hood, and contact occurs with the dashcam vehicle."],
+  ["белый седан занимает переднюю часть кадра вплотную к капоту регистратора", "the white sedan fills the front of the frame very close to the dashcam hood"],
+  ["Последствия маневра", "Aftermath of the maneuver"],
+  ["После контакта Vehicle B уходит правее/вперед из зоны перед капотом, Vehicle A продолжает движение с малой скоростью.", "After contact, Vehicle B moves farther right/ahead out of the area in front of the hood, while Vehicle A continues at low speed."],
+  ["белый седан смещен впереди от регистратора, впереди формируется кратковременное замедление", "the white sedan has moved ahead of the dashcam vehicle, and a short slowdown forms ahead"],
+  ["Отчет подготовлен по ключевым кадрам именно для видео 1000081819.mp4.", "The report was prepared from key frames specifically for video 1000081819.mp4."],
+  ["Событие описано как ДТП: белый седан с левой полосы резко уходит направо перед автомобилем с регистратором.", "The event is described as a crash: the white sedan sharply moves right from the left lane in front of the dashcam vehicle."],
+  ["Госномера в ролике не читаются надежно и оставлены на ручную проверку.", "License plates are not reliably readable in the video and are left for manual review."],
+  ["передняя зона автомобиля с регистратором и боковая/задняя часть белого седана", "front area of the dashcam vehicle and the side/rear area of the white sedan"],
+  ["белый седан с левой полосы выполнил резкое перестроение/поворот направо перед автомобилем с видеорегистратором, перекрыл его траекторию движения и создал ДТП", "the white sedan from the left lane made a sharp lane change/right turn in front of the dashcam vehicle, blocked its path, and caused the crash"],
+  ["признаки резкого перестроения/поворота направо без безопасного интервала перед Vehicle A", "signs of a sharp lane change/right turn without a safe gap in front of Vehicle A"],
+  ["00:04-00:06: белый седан находится левее траектории регистратора и начинает смещение", "00:04-00:06: the white sedan is left of the dashcam vehicle's path and starts moving over"],
+  ["00:06.5-00:07: Vehicle B резко уходит направо в зону движения Vehicle A", "00:06.5-00:07: Vehicle B sharply moves right into Vehicle A's path"],
+  ["00:07: белый седан находится вплотную перед капотом регистратора, фиксируется момент ДТП", "00:07: the white sedan is very close in front of the dashcam hood, and the crash moment is captured"],
+  ["AI формирует предварительное аналитическое заключение. Юридическая виновность устанавливается только уполномоченным органом.", "AI forms a preliminary analytical conclusion. Legal liability is determined only by the authorized authority."],
+  ["кратковременная блокировка правой полосы", "short-term right-lane blockage"],
+  ["правая полоса движения", "right travel lane"],
+  ["Проверить фрагмент 00:04-00:07, где белый седан с левой полосы резко уходит направо перед регистратором.", "Review the 00:04-00:07 segment where the white sedan sharply moves right from the left lane in front of the dashcam vehicle."],
+  ["Отметить Vehicle B как участника с признаками нарушения при маневре и сохранить фрагмент момента ДТП.", "Mark Vehicle B as the participant with violation signs during the maneuver and save the crash-moment segment."],
+  ["При необходимости уточнить госномера по исходному видео вручную.", "If needed, verify license plates manually from the source video."],
+  ["Событие ДТП определяется по видео", "Accident event is detected from the video"],
+  ["Боковое столкновение при левом повороте", "Side collision during a left turn"],
+  ["Попутное столкновение", "Same-direction collision"],
+  ["Конфликт на регулируемом перекрестке", "Signalized intersection conflict"],
+  ["Блокировка полосы после инцидента", "Lane blockage after the incident"],
+  ["Аномальное уплотнение потока", "Abnormal traffic density"],
+  ["тип события не задан оператором и требует проверки по видеозаписи", "the event type was not selected by the operator and requires video review"],
+  ["признаки нарушения не назначены до сверки видео оператором", "violation signs are not assigned until operator video review"],
+  ["движение участника A требует сверки по видео", "participant A movement requires video review"],
+  ["движение участника B требует сверки по видео", "participant B movement requires video review"],
+  ["скорость требует оценки по кадрам", "speed requires frame-by-frame assessment"],
+  ["Видео принято", "Video accepted"],
+  ["Система получила запись и ожидает сверки видимых участников.", "The system received the recording and is waiting for visible participant review."],
+  ["Требуется анализ кадров", "Frame analysis required"],
+  ["Тип события и траектории должны быть подтверждены по видеоряду.", "The event type and trajectories must be confirmed from the video sequence."],
+  ["Операторская проверка", "Operator review"],
+  ["Резервный отчет не назначает конкретный сценарий ДТП.", "The fallback report does not assign a specific accident scenario."],
+  ["автомобиль B начал маневр и пересек траекторию автомобиля A", "vehicle B began a maneuver and crossed vehicle A's path"],
+  ["признаки непредоставления преимущества при маневре", "signs of failing to yield during the maneuver"],
+  ["движение прямо по основной полосе", "moving straight in the main lane"],
+  ["левый поворот через конфликтную траекторию", "left turn through a conflict path"],
+  ["скорость стабильная до момента контакта", "speed remains stable until contact"],
+  ["замедление и изменение направления перед контактом", "slowing and direction change before contact"],
+  ["Обнаружены участники", "Participants detected"],
+  ["Vehicle A движется прямо, Vehicle B приближается к зоне поворота.", "Vehicle A moves straight, while Vehicle B approaches the turn area."],
+  ["Начало маневра", "Maneuver begins"],
+  ["Vehicle B начинает поворот и выходит на конфликтную траекторию.", "Vehicle B starts turning and enters a conflict path."],
+  ["Момент контакта", "Contact moment"],
+  ["Траектории участников пересекаются в центральной зоне перекрестка.", "The participants' trajectories cross in the center of the intersection."],
+  ["Последствие для потока", "Traffic-flow impact"],
+  ["Фиксируется блокировка полосы и рост плотности потока.", "Lane blockage and rising traffic density are recorded."],
+  ["автомобиль B сократил дистанцию и не успел затормозить", "vehicle B shortened the following distance and did not brake in time"],
+  ["признаки несоблюдения дистанции", "signs of unsafe following distance"],
+  ["движение вперед с последующим торможением", "moving forward followed by braking"],
+  ["движение позади в той же полосе", "moving behind in the same lane"],
+  ["скорость снижается перед контактом", "speed decreases before contact"],
+  ["запаздывающее торможение и сокращение дистанции", "delayed braking and reduced following distance"],
+  ["Поток в одной полосе", "Traffic in one lane"],
+  ["Vehicle A и Vehicle B движутся в одном направлении.", "Vehicle A and Vehicle B move in the same direction."],
+  ["Снижение скорости", "Speed reduction"],
+  ["Vehicle A замедляется, дистанция между участниками сокращается.", "Vehicle A slows down, and the distance between participants decreases."],
+  ["Попутный контакт", "Same-direction contact"],
+  ["Vehicle B достигает задней части Vehicle A.", "Vehicle B reaches the rear of Vehicle A."],
+  ["Очередь транспорта", "Vehicle queue"],
+  ["На полосе образуется локальное замедление потока.", "A local traffic slowdown forms in the lane."],
+  ["Хронология построена по выбранному сценарию и требует проверки оператором.", "The chronology was built from the selected scenario and requires operator review."],
+  ["Госномер не удалось надежно извлечь в demo-режиме; требуется ручное подтверждение.", "The license plate could not be reliably extracted in demo mode; manual confirmation is required."],
+  ["Госномер не удалось надежно извлечь в MVP-режиме; требуется ручное подтверждение.", "The license plate could not be reliably extracted in MVP mode; manual confirmation is required."],
+  ["центральная зона перекрестка", "central area of the intersection"],
+  ["пересечение траекторий перед моментом контакта", "trajectory crossing before the contact moment"],
+  ["изменение скорости и направления одного из участников", "change in speed and direction of one participant"],
+  ["блокировка полосы после события", "lane blockage after the event"],
+  ["1 полоса", "1 lane"],
+  ["полоса не подтверждена", "lane not confirmed"],
+  ["Проверить исходное видео оператором перед принятием процессуального решения.", "Have an operator review the source video before making any procedural decision."],
+  ["Передать фрагмент с 00:04 до 00:08 в карточку происшествия.", "Attach the 00:04 to 00:08 segment to the incident card."],
+  ["Отметить участок как временную зону повышенного риска на карте CITY MONITOR.", "Mark the segment as a temporary high-risk zone on the CITY MONITOR map."],
+]);
+
+const ROADVISION_EN_REPLACEMENTS = [
+  [/(\d+)\s*мин\b/g, "$1 min"],
+  [/Gemini API вернул 429: исчерпан лимит для модели/g, "Gemini API returned 429: quota is exhausted for model"],
+  [/Показан резервный анализ; попробуйте позже или проверьте quota\/billing в Google AI Studio\./g, "A fallback analysis is shown; try again later or check quota/billing in Google AI Studio."],
+  [/Gemini API не принял ключ доступа\. Проверьте GEMINI_API_KEY в backend\/\.env\./g, "Gemini API rejected the access key. Check GEMINI_API_KEY in backend/.env."],
+  [/Gemini API не нашёл модель/g, "Gemini API did not find model"],
+  [/Проверьте GEMINI_MODEL в backend\/\.env\./g, "Check GEMINI_MODEL in backend/.env."],
+  [/Госномер/g, "License plate"],
+  [/госномер/g, "license plate"],
+  [/Госномера/g, "License plates"],
+  [/госномера/g, "license plates"],
+  [/ДТП/g, "crash"],
+  [/белый седан/g, "white sedan"],
+  [/Белый седан/g, "White sedan"],
+  [/автомобилем с видеорегистратором/g, "dashcam vehicle"],
+  [/автомобиль с видеорегистратором/g, "dashcam vehicle"],
+  [/автомобилем с регистратором/g, "dashcam vehicle"],
+  [/автомобиль с регистратором/g, "dashcam vehicle"],
+  [/автомобиль-регистратор/g, "dashcam vehicle"],
+  [/регистратором/g, "dashcam vehicle"],
+  [/регистратора/g, "dashcam vehicle"],
+  [/регистратор/g, "dashcam"],
+  [/ручная проверка/g, "manual review"],
+  [/ручное подтверждение/g, "manual confirmation"],
+  [/Требуется проверка/g, "Review required"],
+  [/требуется проверка/g, "review required"],
+  [/резко/g, "sharply"],
+  [/направо/g, "right"],
+  [/налево/g, "left"],
+  [/перед капотом/g, "in front of the hood"],
+  [/перед Vehicle A/g, "in front of Vehicle A"],
+];
+
+function translateRoadVisionText(value, language, copy = ROADVISION_COPY.en) {
+  if (typeof value !== "string" || !value) return value;
+  if ((language || "ru").toLowerCase() !== "en") return value;
+
+  const directTranslation = ROADVISION_EN_TEXT.get(value);
+  if (directTranslation) return directTranslation;
+
+  return ROADVISION_EN_REPLACEMENTS.reduce(
+    (text, [pattern, replacement]) => text.replace(pattern, replacement),
+    value,
+  ).replace(/(\d+)\s*min\b/g, `$1 ${copy.metrics.minutes}`);
+}
+
+function translateRoadVisionList(values, language, copy) {
+  if (!Array.isArray(values)) return values;
+  return values.map((value) => translateRoadVisionText(value, language, copy));
+}
+
+function localizeRoadVisionAnalysis(analysis, language, copy) {
+  if (!analysis) return analysis;
+
+  return {
+    ...analysis,
+    scenario: analysis.scenario
+      ? {
+          ...analysis.scenario,
+          title: translateRoadVisionText(analysis.scenario.title, language, copy),
+        }
+      : analysis.scenario,
+    uncertainty_reason: translateRoadVisionText(
+      analysis.uncertainty_reason,
+      language,
+      copy,
+    ),
+    analysis_quality: analysis.analysis_quality
+      ? {
+          ...analysis.analysis_quality,
+          gemini_message: translateRoadVisionText(
+            analysis.analysis_quality.gemini_message,
+            language,
+            copy,
+          ),
+          warnings: translateRoadVisionList(
+            analysis.analysis_quality.warnings,
+            language,
+            copy,
+          ),
+        }
+      : analysis.analysis_quality,
+    participants: (analysis.participants || []).map((participant) => ({
+      ...participant,
+      label: translateRoadVisionText(participant.label, language, copy),
+      plate: translateRoadVisionText(participant.plate, language, copy),
+      movement: translateRoadVisionText(participant.movement, language, copy),
+      speed_trend: translateRoadVisionText(
+        participant.speed_trend,
+        language,
+        copy,
+      ),
+      role: translateRoadVisionText(participant.role, language, copy),
+      violation_signs: translateRoadVisionList(
+        participant.violation_signs,
+        language,
+        copy,
+      ),
+    })),
+    timeline: (analysis.timeline || []).map((item) => ({
+      ...item,
+      title: translateRoadVisionText(item.title, language, copy),
+      detail: translateRoadVisionText(item.detail, language, copy),
+      visual_evidence: translateRoadVisionText(
+        item.visual_evidence,
+        language,
+        copy,
+      ),
+    })),
+    forensics: analysis.forensics
+      ? {
+          ...analysis.forensics,
+          collision_point: translateRoadVisionText(
+            analysis.forensics.collision_point,
+            language,
+            copy,
+          ),
+          probable_cause: translateRoadVisionText(
+            analysis.forensics.probable_cause,
+            language,
+            copy,
+          ),
+          violation_summary: translateRoadVisionText(
+            analysis.forensics.violation_summary,
+            language,
+            copy,
+          ),
+          evidence: translateRoadVisionList(
+            analysis.forensics.evidence,
+            language,
+            copy,
+          ),
+          legal_note: translateRoadVisionText(
+            analysis.forensics.legal_note,
+            language,
+            copy,
+          ),
+        }
+      : analysis.forensics,
+    traffic_impact: analysis.traffic_impact
+      ? {
+          ...analysis.traffic_impact,
+          lanes_blocked: translateRoadVisionText(
+            analysis.traffic_impact.lanes_blocked,
+            language,
+            copy,
+          ),
+          recovery_eta: translateRoadVisionText(
+            analysis.traffic_impact.recovery_eta,
+            language,
+            copy,
+          ),
+        }
+      : analysis.traffic_impact,
+    map_event: analysis.map_event
+      ? {
+          ...analysis.map_event,
+          affected_roads: translateRoadVisionList(
+            analysis.map_event.affected_roads,
+            language,
+            copy,
+          ),
+        }
+      : analysis.map_event,
+    recommendations: translateRoadVisionList(
+      analysis.recommendations,
+      language,
+      copy,
+    ),
+  };
+}
+
 function applyPlateCorrections(analysis, corrections) {
   if (!analysis) return analysis;
 
@@ -826,10 +1102,10 @@ export default function RoadVision() {
   const [notice, setNotice] = useState(null);
   const [caseActionMessage, setCaseActionMessage] = useState(null);
 
-  const currentAnalysis = useMemo(
-    () => applyPlateCorrections(analysis, plateCorrections),
-    [analysis, plateCorrections],
-  );
+  const currentAnalysis = useMemo(() => {
+    const correctedAnalysis = applyPlateCorrections(analysis, plateCorrections);
+    return localizeRoadVisionAnalysis(correctedAnalysis, language, copy);
+  }, [analysis, plateCorrections, language, copy]);
   const hasAnalysis = Boolean(currentAnalysis);
   const timelineSource = currentAnalysis?.analysis_quality?.timeline_source || "";
   const isTemplateAnalysis =

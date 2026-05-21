@@ -4,6 +4,7 @@ import {
   CircleMarker,
   MapContainer,
   Marker,
+  Polygon,
   Popup,
   TileLayer,
   useMap,
@@ -22,7 +23,7 @@ import { ASTANA_COORDS } from "../constants/city";
 import { useAppStore } from "../store/useAppStore";
 import useDistrictsGeojson from "../hooks/useDistrictsGeojson";
 import { getForecast } from "../services/aiService";
-import { resolveDisplayDistrict } from "../utils/districtUtils";
+import { getDistrictLabel, resolveDisplayDistrict } from "../utils/districtUtils";
 import { reportError } from "../utils/logger";
 import { useI18n } from "../i18n";
 import styles from "./Forecast.module.css";
@@ -350,16 +351,16 @@ const SCENARIO_ROADS = [
   },
   {
     id: "uly-dala",
-    name: "Uly Dala Avenue",
+    name: "Mangilik El Avenue",
     district: "Saraishyk",
     affinity: ["concert", "match"],
     positions: [
-      [51.0919, 71.3698],
-      [51.0964, 71.3815],
-      [51.1011, 71.394],
-      [51.1058, 71.4068],
-      [51.1105, 71.4195],
-      [51.1151, 71.4318],
+      [51.092, 71.456],
+      [51.096, 71.481],
+      [51.101, 71.506],
+      [51.107, 71.535],
+      [51.113, 71.565],
+      [51.119, 71.595],
     ],
   },
   {
@@ -750,6 +751,73 @@ function getRoutePoint(positions, ratio = 0.5) {
   return positions[index];
 }
 
+function getDistrictNameFromFeature(feature) {
+  const properties = feature?.properties || {};
+  const candidates = [
+    properties.name_object,
+    properties.name_object_kaz,
+    properties.district_en,
+    properties.DISTRICT_EN,
+    properties.name_en,
+    properties.NAME_EN,
+    properties["name:en"],
+    properties.official_name,
+    properties.OFFICIAL_NAME,
+    properties.name_ru,
+    properties.NAME_RU,
+    properties["name:ru"],
+    properties.name_kk,
+    properties.NAME_KK,
+    properties["name:kk"],
+    properties.district,
+    properties.DISTRICT,
+    properties.name,
+    properties.NAME,
+    properties.Name,
+    properties.label,
+    properties.LABEL,
+    properties.region,
+  ];
+
+  for (const value of candidates) {
+    const district = getDistrictLabel(value);
+    if (district !== "Unknown") return district;
+  }
+
+  return "Unknown";
+}
+
+function geometryToOuterRings(geometry) {
+  if (!geometry?.coordinates) return [];
+
+  const toLatLngRing = (ring = []) =>
+    ring
+      .map((point) => [Number(point?.[1]), Number(point?.[0])])
+      .filter(([lat, lng]) => Number.isFinite(lat) && Number.isFinite(lng));
+
+  if (geometry.type === "Polygon") {
+    return [toLatLngRing(geometry.coordinates[0])].filter(
+      (ring) => ring.length >= 3,
+    );
+  }
+
+  if (geometry.type === "MultiPolygon") {
+    return geometry.coordinates
+      .map((polygon) => toLatLngRing(polygon?.[0]))
+      .filter((ring) => ring.length >= 3);
+  }
+
+  return [];
+}
+
+function getSelectedDistrictRings(geojson, district) {
+  if (!geojson?.features?.length || !district) return [];
+
+  return geojson.features
+    .filter((feature) => getDistrictNameFromFeature(feature) === district)
+    .flatMap((feature) => geometryToOuterRings(feature.geometry));
+}
+
 function createScenarioMarkerIcon(signal) {
   const markerClass = [
     styles.scenarioMarker,
@@ -835,6 +903,7 @@ function ForecastScenarioMap({
   dangerZones,
   mapSignals,
   riskScore,
+  selectedDistrictRings = [],
   copy,
 }) {
   return (
@@ -850,6 +919,21 @@ function ForecastScenarioMap({
       />
       <ScenarioMapResize />
       <ScenarioMapFocus center={center} riskScore={riskScore} />
+
+      {selectedDistrictRings.map((ring, index) => (
+        <Polygon
+          key={`selected-district-${index}`}
+          positions={ring}
+          pathOptions={{
+            color: "#2563eb",
+            fillColor: "#2563eb",
+            fillOpacity: 0.045,
+            opacity: 0.55,
+            weight: 2,
+            dashArray: "7 7",
+          }}
+        />
+      ))}
 
       {dangerZones.map((zone) => (
         <Fragment key={zone.name}>
@@ -962,6 +1046,7 @@ function ForecastScenarioMap({
 function RoadScenarioPlanner({
   districtOptions,
   districtStats,
+  districtsGeojson,
   scenario,
   setScenario,
   language,
@@ -1073,6 +1158,10 @@ function RoadScenarioPlanner({
       ASTANA_COORDS.lat,
       ASTANA_COORDS.lng,
     ];
+  const selectedDistrictRings = useMemo(
+    () => getSelectedDistrictRings(districtsGeojson, scenario.district),
+    [districtsGeojson, scenario.district],
+  );
 
   const scenarioRoads = SCENARIO_ROADS.map((road) => {
     const selectedDistrictBoost = road.district === scenario.district ? 16 : 0;
@@ -1521,6 +1610,7 @@ function RoadScenarioPlanner({
               dangerZones={dangerZones}
               mapSignals={mapSignals}
               riskScore={riskScore}
+              selectedDistrictRings={selectedDistrictRings}
               copy={copy}
             />
 
@@ -2006,6 +2096,7 @@ export default function Forecast() {
       <RoadScenarioPlanner
         districtOptions={districtOptions}
         districtStats={districtStats}
+        districtsGeojson={districtsGeojson}
         scenario={scenario}
         setScenario={setScenario}
         language={language}
