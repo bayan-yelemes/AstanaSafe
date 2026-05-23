@@ -1,4 +1,6 @@
 import os
+import threading
+import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,6 +19,8 @@ from .routers import (
     traffic_reports,
 )
 from .routers.ai import router as ai_router
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_CORS_ORIGINS = [
     "http://localhost:5173",
@@ -44,7 +48,7 @@ def get_cors_origins() -> list[str]:
     return origins
 
 
-def create_app() -> FastAPI:
+def initialize_database() -> None:
     models.Base.metadata.create_all(bind=engine)
 
     with engine.begin() as connection:
@@ -97,6 +101,20 @@ def create_app() -> FastAPI:
             )
         )
 
+
+def initialize_database_in_background() -> None:
+    thread = threading.Thread(target=_initialize_database_safely, daemon=True)
+    thread.start()
+
+
+def _initialize_database_safely() -> None:
+    try:
+        initialize_database()
+    except Exception:
+        logger.exception("Database initialization failed during startup.")
+
+
+def create_app() -> FastAPI:
     app = FastAPI(title="AstanaSafe API", version="1.0")
     app.add_middleware(
         CORSMiddleware,
@@ -117,8 +135,16 @@ def create_app() -> FastAPI:
     app.include_router(roadvision.router, prefix="/api")
     app.include_router(ai_router, prefix="/api")
 
+    @app.on_event("startup")
+    def startup() -> None:
+        initialize_database_in_background()
+
     @app.get("/health")
     def health():
+        return {"status": "ok"}
+
+    @app.get("/health/db")
+    def database_health():
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
         return {"status": "ok"}
