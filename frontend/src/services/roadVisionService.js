@@ -315,5 +315,17 @@ export async function analyzeRoadVisionVideo({
   formData.append("engine", engine);
 
   const { data } = await api.post("/roadvision/analyze", formData);
+
+  if (
+    !data ||
+    typeof data !== "object" ||
+    !Array.isArray(data.participants) ||
+    !Array.isArray(data.timeline)
+  ) {
+    throw new Error(
+      "Invalid RoadVision API response. Check the Render API service or /api rewrite.",
+    );
+  }
+
   return data;
 }

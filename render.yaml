@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: astanasafe-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: astanasafe-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://astanasafe-web.onrender.com
+      - key: CORS_ORIGINS
+        value: https://astanasafe-web.onrender.com
+      - key: PASSWORD_RESET_DEMO_MODE
+        value: "false"
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+
+  - type: web
+    name: astanasafe-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://astanasafe-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://astanasafe-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: astanasafe-db
+    plan: free
+    databaseName: astanasafe
+    user: astanasafe
