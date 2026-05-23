@@ -1,7 +1,20 @@
 import axios from "axios";
 
+const RENDER_API_BASE_URL = "https://astanasafe-api.onrender.com/api";
+
+function getDefaultApiBaseUrl() {
+  if (
+    typeof window !== "undefined" &&
+    window.location.hostname === "astanasafe-web.onrender.com"
+  ) {
+    return RENDER_API_BASE_URL;
+  }
+
+  return "/api";
+}
+
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || "/api"
+  import.meta.env.VITE_API_BASE_URL || getDefaultApiBaseUrl()
 ).replace(/\/+$/, "");
 
 const api = axios.create({
