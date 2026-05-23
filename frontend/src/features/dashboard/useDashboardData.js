@@ -6,6 +6,11 @@ import { useAppStore } from "../../store/useAppStore";
 import { formatDateForApi } from "../../utils/date";
 import { resolveDisplayDistrict } from "../../utils/districtUtils";
 import { reportError } from "../../utils/logger";
+import {
+  normalizeIncidentType,
+  normalizeReportType,
+  normalizeWeatherOption,
+} from "../../constants/reportOptions";
 
 function isSameApiDate(left, right) {
   return formatDateForApi(new Date(left)) === formatDateForApi(right);
@@ -104,8 +109,8 @@ export default function useDashboardData({ language, t }) {
       source: "accident",
       lat: item.latitude ?? item.lat,
       lng: item.longitude ?? item.lng,
-      weather: item.weather || "unknown",
-      type: item.type || item.accident_type || "incident",
+      weather: normalizeWeatherOption(item.weather),
+      type: normalizeIncidentType(item.type || item.accident_type, "incident"),
       category:
         item.severity === "high"
           ? "High Severity Accident"
@@ -123,8 +128,8 @@ export default function useDashboardData({ language, t }) {
       lat: item.lat,
       lng: item.lng,
       createdAt: item.createdAt || item.created_at,
-      weather: item.weather || "unknown",
-      type: item.type || "incident",
+      weather: normalizeWeatherOption(item.weather),
+      type: normalizeReportType(item),
       road: item.road || t("common.unknownRoad"),
       crossroad: item.crossroad || "",
     }));
@@ -137,18 +142,19 @@ export default function useDashboardData({ language, t }) {
       const matchesDistrict =
         filters.district === "all" || item.district === filters.district;
 
-      const itemType = String(item.type || "").toLowerCase();
-      const itemCategory = String(item.category || "").toLowerCase();
+      const itemType = normalizeIncidentType(item.type, "unknown");
+      const selectedType = normalizeIncidentType(filters.type, filters.type);
+      const itemWeather = normalizeWeatherOption(item.weather);
+      const selectedWeather = normalizeWeatherOption(
+        filters.weather,
+        filters.weather,
+      );
 
       const matchesType =
-        filters.type === "all" ||
-        itemType === String(filters.type).toLowerCase() ||
-        itemCategory.includes(String(filters.type).toLowerCase());
+        filters.type === "all" || itemType === selectedType;
 
       const matchesWeather =
-        filters.weather === "all" ||
-        String(item.weather || "").toLowerCase() ===
-          String(filters.weather).toLowerCase();
+        filters.weather === "all" || itemWeather === selectedWeather;
 
       return matchesDistrict && matchesType && matchesWeather;
     });

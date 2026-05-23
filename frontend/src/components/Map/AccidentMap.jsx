@@ -23,6 +23,11 @@ import {
   getRiskColor,
   getRiskPanelCopy,
 } from "../../features/risk/riskPanelHelpers";
+import {
+  normalizeIncidentType,
+  normalizeReportType,
+  normalizeWeatherOption,
+} from "../../constants/reportOptions";
 
 import { useI18n } from "../../i18n";
 import styles from "./AccidentMap.module.css";
@@ -178,8 +183,8 @@ export default function AccidentMap({
         createdAt: item.date,
         road: item.road || item.description || t("dashboard.historicalRecord"),
         crossroad: item.crossroad || "",
-        weather: item.weather || "unknown",
-        type: item.type || item.accident_type || "incident",
+        weather: normalizeWeatherOption(item.weather),
+        type: normalizeIncidentType(item.type || item.accident_type, "incident"),
         category:
           item.severity === "high"
             ? "High Severity Accident"
@@ -213,8 +218,8 @@ export default function AccidentMap({
             },
             districtsGeojson,
           ),
-          type: item.type || "",
-          weather: item.weather || "",
+          type: normalizeReportType(item),
+          weather: normalizeWeatherOption(item.weather),
           createdAt: item.createdAt || item.created_at,
           road: item.road || t("common.unknownRoad"),
           crossroad: item.crossroad || "",
@@ -249,8 +254,8 @@ export default function AccidentMap({
             "Unknown",
           road: item.road || item.description || t("common.unknownRoad"),
           crossroad: item.crossroad || "",
-          weather: item.weather || "unknown",
-          type: item.type || "incident",
+          weather: normalizeWeatherOption(item.weather),
+          type: normalizeIncidentType(item.type, "incident"),
           category: item.category || "Incident",
           createdAt: item.createdAt || item.created_at || item.date,
         }));
@@ -260,11 +265,14 @@ export default function AccidentMap({
       const itemDistrict = normalizeText(item.district);
       const selectedDistrict = normalizeText(filters.district);
 
-      const itemType = normalizeText(item.type);
-      const selectedType = normalizeText(filters.type);
+      const itemType = normalizeIncidentType(item.type, "unknown");
+      const selectedType = normalizeIncidentType(filters.type, filters.type);
 
-      const itemWeather = normalizeText(item.weather);
-      const selectedWeather = normalizeText(filters.weather);
+      const itemWeather = normalizeWeatherOption(item.weather);
+      const selectedWeather = normalizeWeatherOption(
+        filters.weather,
+        filters.weather,
+      );
 
       const districtMatch =
         selectedDistrict === "all" || itemDistrict === selectedDistrict;

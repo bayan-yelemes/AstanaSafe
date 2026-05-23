@@ -1,4 +1,8 @@
 import { useAppStore } from "../../store/useAppStore";
+import {
+  INCIDENT_TYPE_OPTIONS,
+  ANALYTICS_WEATHER_OPTIONS,
+} from "../../constants/reportOptions";
 import { useI18n } from "../../i18n";
 import styles from "./FilterPanel.module.css";
 
@@ -35,9 +39,11 @@ export default function FilterPanel() {
         className={styles.select}
       >
         <option value="all">{t("filters.allTypes")}</option>
-        <option value="collision">{tt("collision")}</option>
-        <option value="pedestrian">{tt("pedestrian")}</option>
-        <option value="rollover">{tt("rollover")}</option>
+        {INCIDENT_TYPE_OPTIONS.map((type) => (
+          <option key={type} value={type}>
+            {tt(type)}
+          </option>
+        ))}
       </select>
 
       <select
@@ -46,10 +52,11 @@ export default function FilterPanel() {
         className={styles.select}
       >
         <option value="all">{t("filters.allWeather")}</option>
-        <option value="clear">{tw("clear")}</option>
-        <option value="rain">{tw("rain")}</option>
-        <option value="snow">{tw("snow")}</option>
-        <option value="ice">{tw("ice")}</option>
+        {ANALYTICS_WEATHER_OPTIONS.map((weather) => (
+          <option key={weather} value={weather}>
+            {tw(weather)}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -5,6 +5,7 @@ import { useAppStore } from "../../store/useAppStore";
 import useDistrictsGeojson from "../../hooks/useDistrictsGeojson";
 import { getNearestLocation } from "../../services/roadsService";
 import { getDistrictForPoint } from "../../utils/districtUtils";
+import { REPORT_TYPE_OPTIONS, WEATHER_OPTIONS } from "../../constants/reportOptions";
 import { useI18n } from "../../i18n";
 import styles from "./TrafficJamModal.module.css";
 
@@ -15,33 +16,6 @@ const categories = [
   "High Severity Accident",
 ];
 
-const types = [
-  "traffic_jam",
-  "collision",
-  "pedestrian",
-  "rollover",
-  "roadwork",
-  "public_event",
-  "road_closure",
-  "stalled_vehicle",
-  "police_checkpoint",
-  "debris",
-  "flooding",
-  "other",
-];
-const weatherOptions = [
-  "clear",
-  "cloudy",
-  "rain",
-  "heavy_rain",
-  "snow",
-  "ice",
-  "fog",
-  "storm",
-  "hail",
-  "strong_wind",
-  "poor_visibility",
-];
 const durationOptions = [
   { value: 15, labelKey: "trafficModal.durationShort" },
   { value: 30, labelKey: "trafficModal.durationMedium" },
@@ -556,7 +530,7 @@ export default function TrafficJamModal({
             onChange={(e) => setType(e.target.value)}
             className={styles.inputStyle}
           >
-            {types.map((item) => (
+            {REPORT_TYPE_OPTIONS.map((item) => (
               <option key={item} value={item}>
                 {tt(item)}
               </option>
@@ -571,7 +545,7 @@ export default function TrafficJamModal({
             onChange={(e) => setWeather(e.target.value)}
             className={styles.inputStyle}
           >
-            {weatherOptions.map((item) => (
+            {WEATHER_OPTIONS.map((item) => (
               <option key={item} value={item}>
                 {tw(item)}
               </option>

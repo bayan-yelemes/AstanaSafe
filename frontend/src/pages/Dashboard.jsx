@@ -74,11 +74,6 @@ function formatActivityClock(dateString) {
   });
 }
 
-function formatLabel(value) {
-  if (!value) return "Unknown";
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
 function getSeverityBadge(report) {
   if (report.category === "High Severity Accident") {
     return { label: "HIGH", bg: "#fee2e2", color: "#dc2626" };
@@ -92,7 +87,7 @@ function getSeverityBadge(report) {
   return { label: "TRAFFIC", bg: "#f3e8ff", color: "#9333ea" };
 }
 
-function RecentActivityItem({ report, compact = false, t, tc }) {
+function RecentActivityItem({ report, compact = false, t, tc, tt, tw }) {
   return (
     <div
       style={{
@@ -142,8 +137,8 @@ function RecentActivityItem({ report, compact = false, t, tc }) {
               lineHeight: 1.5,
             }}
           >
-            Type: {formatLabel(report.type)} · Weather:{" "}
-            {formatLabel(report.weather)}
+            {t("common.type")}: {tt(report.type || "unknown")} ·{" "}
+            {t("common.weather")}: {tw(report.weather || "unknown")}
           </div>
 
           <div className={styles.dashboardStyle5}>
@@ -672,6 +667,8 @@ export default function Dashboard() {
                     compact
                     t={t}
                     tc={tc}
+                    tt={tt}
+                    tw={tw}
                   />
                 ))
               )}

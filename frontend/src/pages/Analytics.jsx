@@ -34,6 +34,11 @@ import {
   normalizeUserReportType,
   normalizeWeather,
 } from "../features/analytics/analyticsMappers";
+import {
+  ANALYTICS_WEATHER_OPTIONS,
+  INCIDENT_TYPE_COLORS,
+  INCIDENT_TYPE_OPTIONS,
+} from "../constants/reportOptions";
 import { useI18n } from "../i18n";
 import styles from "./Analytics.module.css";
 
@@ -323,27 +328,7 @@ export default function Analytics() {
     ],
   };
 
-  const donutColors = {
-    collision: "#3b82f6",
-    pedestrian: "#f59e0b",
-    rollover: "#ef4444",
-    incident: "#06b6d4",
-    "traffic jam": "#8b5cf6",
-    unknown: "#94a3b8",
-    other: "#10b981",
-  };
-
-  const incidentTypeOrder = [
-    "collision",
-    "pedestrian",
-    "rollover",
-    "traffic jam",
-    "incident",
-    "unknown",
-    "other",
-  ];
-
-  const visibleTypes = incidentTypeOrder.filter(
+  const visibleTypes = INCIDENT_TYPE_OPTIONS.filter(
     (type) => (typeCounts[type] || 0) > 0,
   );
 
@@ -353,7 +338,7 @@ export default function Analytics() {
       {
         data: visibleTypes.map((key) => typeCounts[key] || 0),
         backgroundColor: visibleTypes.map(
-          (key) => donutColors[key] || "#94a3b8",
+          (key) => INCIDENT_TYPE_COLORS[key] || "#94a3b8",
         ),
         borderWidth: 0,
         cutout: "72%",
@@ -363,7 +348,7 @@ export default function Analytics() {
     ],
   };
 
-  const weatherOrder = ["clear", "rain", "ice", "snow", "fog", "unknown"];
+  const weatherOrder = ANALYTICS_WEATHER_OPTIONS;
 
   const weatherImpactData = {
     labels: weatherOrder.map((item) => tw(item)),

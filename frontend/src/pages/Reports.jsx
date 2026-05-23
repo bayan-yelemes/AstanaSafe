@@ -10,6 +10,12 @@ import { getRawTrafficReports } from "../services/trafficReportsService";
 import { API_BASE_URL } from "../api/client";
 import { resolveDisplayDistrict } from "../utils/districtUtils";
 import { reportError } from "../utils/logger";
+import {
+  INCIDENT_TYPE_COLORS,
+  normalizeIncidentType,
+  normalizeReportType,
+  normalizeWeatherOption,
+} from "../constants/reportOptions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { enGB, kk, ru } from "date-fns/locale";
@@ -20,6 +26,23 @@ const dateLocales = {
   en: enGB,
   ru,
   kz: kk,
+};
+
+const TYPE_BADGE_BACKGROUNDS = {
+  traffic_jam: "#f5f3ff",
+  collision: "#eef2ff",
+  pedestrian: "#fff7ed",
+  rollover: "#fef2f2",
+  roadwork: "#f8fafc",
+  public_event: "#fdf2f8",
+  road_closure: "#f3f4f6",
+  stalled_vehicle: "#f0fdfa",
+  police_checkpoint: "#f0f9ff",
+  debris: "#fefce8",
+  flooding: "#ecfeff",
+  incident: "#f0fdf4",
+  other: "#f1f5f9",
+  unknown: "#f1f5f9",
 };
 
 function formatLocalDate(date) {
@@ -46,57 +69,12 @@ function formatTableTime(date) {
 }
 
 function normalizeHistoricalType(item) {
-  const accidentType = String(item?.accident_type || "")
-    .trim()
-    .toLowerCase();
-  const description = String(item?.description || "")
-    .trim()
-    .toLowerCase();
-  const roadCondition = String(item?.road_condition || "")
-    .trim()
-    .toLowerCase();
-
-  const combined = `${accidentType} ${description} ${roadCondition}`.trim();
-
-  if (
-    combined.includes("traffic jam") ||
-    combined.includes("jam") ||
-    combined.includes("congestion") ||
-    combined.includes("пробк")
-  ) {
-    return "Traffic Jam";
-  }
-
-  if (
-    combined.includes("collision") ||
-    combined.includes("accident") ||
-    combined.includes("crash") ||
-    combined.includes("столк")
-  ) {
-    return "Collision";
-  }
-
-  if (
-    combined.includes("rollover") ||
-    combined.includes("overturn") ||
-    combined.includes("опрок")
-  ) {
-    return "Rollover";
-  }
-
-  if (combined.includes("pedestrian") || combined.includes("пешеход")) {
-    return "Pedestrian";
-  }
-
-  if (
-    combined.includes("incident") ||
-    combined.includes("hazard") ||
-    combined.includes("danger")
-  ) {
-    return "Incident";
-  }
-
-  return "Other";
+  return normalizeIncidentType(
+    [item?.accident_type, item?.description, item?.road_condition]
+      .filter(Boolean)
+      .join(" "),
+    "unknown",
+  );
 }
 
 function normalizeHistoricalSeverity(severity) {
@@ -128,71 +106,8 @@ function normalizeHistoricalSeverity(severity) {
   return "Low";
 }
 
-function normalizeTrafficType(value) {
-  const text = String(value || "")
-    .trim()
-    .toLowerCase();
-  const normalizedText = `${text} ${text.replaceAll("_", " ")}`;
-
-  if (
-    normalizedText.includes("traffic jam") ||
-    normalizedText.includes("active traffic jam") ||
-    normalizedText.includes("jam") ||
-    normalizedText.includes("congestion") ||
-    normalizedText.includes("traffic")
-  ) {
-    return "Traffic Jam";
-  }
-
-  if (
-    normalizedText.includes("collision") ||
-    normalizedText.includes("crash") ||
-    normalizedText.includes("accident")
-  ) {
-    return "Collision";
-  }
-
-  if (normalizedText.includes("rollover")) {
-    return "Rollover";
-  }
-
-  if (normalizedText.includes("pedestrian")) {
-    return "Pedestrian";
-  }
-
-  if (normalizedText.includes("roadwork") || normalizedText.includes("road work")) {
-    return "Roadwork";
-  }
-
-  if (normalizedText.includes("public event") || normalizedText.includes("event")) {
-    return "Public Event";
-  }
-
-  if (normalizedText.includes("road closure") || normalizedText.includes("closure")) {
-    return "Road Closure";
-  }
-
-  if (normalizedText.includes("stalled vehicle")) {
-    return "Stalled Vehicle";
-  }
-
-  if (normalizedText.includes("police checkpoint")) {
-    return "Police Checkpoint";
-  }
-
-  if (normalizedText.includes("debris")) {
-    return "Road Debris";
-  }
-
-  if (normalizedText.includes("flooding")) {
-    return "Flooding";
-  }
-
-  if (normalizedText.includes("incident")) {
-    return "Incident";
-  }
-
-  return "Other";
+function normalizeTrafficType(report) {
+  return normalizeReportType(report);
 }
 
 function normalizeTrafficSeverity(report) {
@@ -240,44 +155,14 @@ function normalizeTrafficSeverity(report) {
 }
 
 function normalizeWeather(value) {
-  const text = String(value || "")
-    .trim()
-    .toLowerCase();
-
-  if (!text) return "unknown";
-  if (text.includes("clear")) return "clear";
-  if (text.includes("cloud")) return "cloudy";
-  if (text.includes("heavy_rain") || text.includes("heavy rain")) return "heavy_rain";
-  if (text.includes("rain")) return "rain";
-  if (text.includes("snow")) return "snow";
-  if (text.includes("ice")) return "ice";
-  if (text.includes("fog")) return "fog";
-  if (text.includes("storm")) return "storm";
-  if (text.includes("hail")) return "hail";
-  if (text.includes("strong_wind") || text.includes("strong wind")) return "strong_wind";
-  if (text.includes("poor_visibility") || text.includes("poor visibility"))
-    return "poor_visibility";
-
-  return text;
+  return normalizeWeatherOption(value);
 }
 
 function getTypeBadgeStyle(type) {
-  if (type === "Traffic Jam") {
-    return { bg: "#f5f3ff", color: "#8b5cf6" };
-  }
-  if (type === "Collision") {
-    return { bg: "#eef2ff", color: "#64748b" };
-  }
-  if (type === "Pedestrian") {
-    return { bg: "#fff7ed", color: "#f59e0b" };
-  }
-  if (type === "Rollover") {
-    return { bg: "#fef2f2", color: "#ef4444" };
-  }
-  if (type === "Incident") {
-    return { bg: "#ecfeff", color: "#06b6d4" };
-  }
-  return { bg: "#f1f5f9", color: "#64748b" };
+  return {
+    bg: TYPE_BADGE_BACKGROUNDS[type] || "#f1f5f9",
+    color: INCIDENT_TYPE_COLORS[type] || "#64748b",
+  };
 }
 
 function getSeverityBadgeStyle(severity) {
@@ -414,7 +299,7 @@ export default function Reports() {
             },
             districtsGeojson,
           ),
-          type: normalizeTrafficType(t.category || t.type || "Traffic Jam"),
+          type: normalizeTrafficType(t),
           severity: normalizeTrafficSeverity(t),
           weather: normalizeWeather(t.weather),
           lat,

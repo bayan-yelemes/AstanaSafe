@@ -49,13 +49,12 @@ function AppContent() {
 
   useEffect(() => {
     const sync = () => {
-      fetchTrafficReports();
-
       if (hasAuthToken) {
         refreshCurrentUser();
       }
 
       if (isAuthenticated) {
+        fetchTrafficReports();
         fetchSosIncidents({ activeOnly: false });
       }
     };
