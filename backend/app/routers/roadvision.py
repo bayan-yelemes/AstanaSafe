@@ -2,7 +2,10 @@ from typing import Optional
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from ..services.roadvision import build_roadvision_analysis
+from ..services.roadvision import (
+    build_roadvision_analysis,
+    find_prepared_roadvision_analysis,
+)
 
 router = APIRouter(prefix="/roadvision", tags=["roadvision"])
 
@@ -29,6 +32,17 @@ async def analyze_roadvision_video(
 
     filename = video.filename or "uploaded-video.mp4"
     content_type = video.content_type or "video/mp4"
+
+    prepared_analysis = find_prepared_roadvision_analysis(
+        video_bytes=content,
+        filename=filename,
+        content_type=content_type,
+        location_name=location_name,
+        lat=lat,
+        lng=lng,
+    )
+    if prepared_analysis is not None:
+        return prepared_analysis
 
     return build_roadvision_analysis(
         filename=filename,

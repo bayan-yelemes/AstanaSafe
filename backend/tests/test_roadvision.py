@@ -1,6 +1,8 @@
+import asyncio
 from hashlib import sha1
 
 import app.services.roadvision as roadvision_service
+from app.routers import roadvision as roadvision_router
 from app.services.roadvision import (
     build_roadvision_analysis,
     _attach_gemini_unavailable,
@@ -54,7 +56,37 @@ def test_prepared_roadvision_video_hash_returns_frame_report(monkeypatch):
     assert result["forensics"]["participant_with_violation_signs"] == "Vehicle B"
     assert result["scenario"]["impact_type"] == "side_impact"
     assert "белый седан" in result["forensics"]["probable_cause"]
-    assert "направо" in result["forensics"]["probable_cause"]
+    assert "перестроился направо" in result["forensics"]["probable_cause"]
+
+
+def test_roadvision_router_returns_prepared_report_for_demo_hash(monkeypatch):
+    class Upload:
+        filename = "1000081819.mp4"
+        content_type = "video/mp4"
+
+        async def read(self):
+            return b"prepared roadvision sample"
+
+    monkeypatch.setattr(
+        roadvision_service,
+        "PREPARED_ROADVISION_VIDEO_SHA1",
+        sha1(b"prepared roadvision sample").hexdigest(),
+    )
+
+    result = asyncio.run(
+        roadvision_router.analyze_roadvision_video(
+            video=Upload(),
+            scenario="unknown",
+            location_name="Кабанбай батыра / Сыганак",
+            lat=51.1239,
+            lng=71.4302,
+        )
+    )
+
+    assert result["source"] == "roadvision_prepared"
+    assert result["forensics"]["participant_with_violation_signs"] == "Vehicle B"
+    assert "белый седан" in result["forensics"]["probable_cause"]
+    assert "тип события не задан" not in result["forensics"]["probable_cause"]
 
 
 def test_gemini_prompt_builds_with_dashcam_context():

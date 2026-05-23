@@ -584,6 +584,7 @@ const ROADVISION_EN_TEXT = new Map([
   ["Госномера в ролике не читаются надежно и оставлены на ручную проверку.", "License plates are not reliably readable in the video and are left for manual review."],
   ["передняя зона автомобиля с регистратором и боковая/задняя часть белого седана", "front area of the dashcam vehicle and the side/rear area of the white sedan"],
   ["белый седан с левой полосы выполнил резкое перестроение/поворот направо перед автомобилем с видеорегистратором, перекрыл его траекторию движения и создал ДТП", "the white sedan from the left lane made a sharp lane change/right turn in front of the dashcam vehicle, blocked its path, and caused the crash"],
+  ["Предварительно: белый седан, двигаясь с левой полосы, резко перестроился направо перед автомобилем с видеорегистратором, перекрыл его траекторию и спровоцировал столкновение", "Preliminarily, the white sedan moved sharply right from the left lane in front of the dashcam vehicle, blocked its path, and triggered the collision"],
   ["признаки резкого перестроения/поворота направо без безопасного интервала перед Vehicle A", "signs of a sharp lane change/right turn without a safe gap in front of Vehicle A"],
   ["00:04-00:06: белый седан находится левее траектории регистратора и начинает смещение", "00:04-00:06: the white sedan is left of the dashcam vehicle's path and starts moving over"],
   ["00:06.5-00:07: Vehicle B резко уходит направо в зону движения Vehicle A", "00:06.5-00:07: Vehicle B sharply moves right into Vehicle A's path"],
