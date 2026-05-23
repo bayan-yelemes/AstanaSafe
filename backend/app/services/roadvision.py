@@ -1523,6 +1523,7 @@ def build_roadvision_analysis(
     location_name: Optional[str] = None,
     lat: Optional[float] = None,
     lng: Optional[float] = None,
+    language: str = "ru",
 ) -> dict:
     profile = SCENARIO_PROFILES.get(scenario, SCENARIO_PROFILES["left_turn_conflict"])
     seed = f"{filename}:{file_size}:{scenario}:{location_name}"
@@ -1589,13 +1590,24 @@ def build_roadvision_analysis(
         for time, title, detail, level in profile["timeline"]
     ]
 
-    quality_warnings = [
-        "Хронология построена по выбранному сценарию и требует проверки оператором.",
-    ]
+    language_code = str(language or "ru").lower()
+    if language_code == "kz":
+        quality_warnings = [
+            "Хронология таңдалған сценарий бойынша құрылды және оператордың тексеруін қажет етеді.",
+        ]
+    else:
+        quality_warnings = [
+            "Хронология построена по выбранному сценарию и требует проверки оператором.",
+        ]
     if not plate_candidates:
-        quality_warnings.append(
-            "Госномер не удалось надежно извлечь в MVP-режиме; требуется ручное подтверждение."
-        )
+        if language_code == "kz":
+            quality_warnings.append(
+                "MVP режимінде мемлекеттік нөмірді сенімді анықтау мүмкін болмады; қолмен растау қажет."
+            )
+        else:
+            quality_warnings.append(
+                "Госномер не удалось надежно извлечь в MVP-режиме; требуется ручное подтверждение."
+            )
 
     return _strip_overlay_geometry({
         "analysis_id": f"rv-{sha1(seed.encode('utf-8')).hexdigest()[:10]}",

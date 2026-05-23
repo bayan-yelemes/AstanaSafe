@@ -32,6 +32,7 @@ async def analyze_roadvision_video(
 
     filename = video.filename or "uploaded-video.mp4"
     content_type = video.content_type or "video/mp4"
+    language_value = str(getattr(language, "default", language) or "ru")
 
     prepared_analysis = find_prepared_roadvision_analysis(
         video_bytes=content,
@@ -52,4 +53,5 @@ async def analyze_roadvision_video(
         location_name=location_name,
         lat=lat,
         lng=lng,
+        language=language_value,
     )
