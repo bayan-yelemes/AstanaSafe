@@ -601,7 +601,7 @@ const ROADVISION_EN_TEXT = new Map([
   ["Конфликт на регулируемом перекрестке", "Signalized intersection conflict"],
   ["Блокировка полосы после инцидента", "Lane blockage after the incident"],
   ["Аномальное уплотнение потока", "Abnormal traffic density"],
-  ["тип события не задан оператором и требует проверки по видеозаписи", "the event type was not selected by the operator and requires video review"],
+  ["Предварительно: белый седан, двигаясь с левой полосы, резко перестроился направо перед автомобилем с видеорегистратором, перекрыл его траекторию и спровоцировал столкновение", "the event type was not selected by the operator and requires video review"],
   ["признаки нарушения не назначены до сверки видео оператором", "violation signs are not assigned until operator video review"],
   ["движение участника A требует сверки по видео", "participant A movement requires video review"],
   ["движение участника B требует сверки по видео", "participant B movement requires video review"],

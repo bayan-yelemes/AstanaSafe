@@ -89,6 +89,51 @@ def test_roadvision_router_returns_prepared_report_for_demo_hash(monkeypatch):
     assert "тип события не задан" not in result["forensics"]["probable_cause"]
 
 
+def test_roadvision_router_returns_template_by_default(monkeypatch):
+    class Upload:
+        filename = "dashcam.mp4"
+        content_type = "video/mp4"
+
+        async def read(self):
+            return b"new roadvision sample"
+
+    result = asyncio.run(
+        roadvision_router.analyze_roadvision_video(
+            video=Upload(),
+            scenario="unknown",
+            location_name="Кабанбай батыра / Сыганак",
+            lat=51.1239,
+            lng=71.4302,
+        )
+    )
+
+    assert result["source"] == "roadvision_mvp"
+    assert result["analysis_quality"]["timeline_source"] == "scenario_template"
+
+
+def test_roadvision_router_ignores_requested_gemini_engine():
+    class Upload:
+        filename = "dashcam.mp4"
+        content_type = "video/mp4"
+
+        async def read(self):
+            return b"new roadvision sample"
+
+    result = asyncio.run(
+        roadvision_router.analyze_roadvision_video(
+            video=Upload(),
+            scenario="unknown",
+            location_name="Кабанбай батыра / Сыганак",
+            lat=51.1239,
+            lng=71.4302,
+            engine="gemini",
+        )
+    )
+
+    assert result["source"] == "roadvision_mvp"
+    assert result["analysis_quality"]["timeline_source"] == "scenario_template"
+
+
 def test_gemini_prompt_builds_with_dashcam_context():
     prompt = _build_gemini_prompt("left_turn_conflict", "Кабанбай батыра / Сыганак")
 
