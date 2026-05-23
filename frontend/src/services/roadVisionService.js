@@ -1,6 +1,6 @@
 import api from "../api/client";
 
-const DEFAULT_LOCATION = {
+export const DEFAULT_ROADVISION_LOCATION = {
   name: "Кабанбай батыра / Сыганак",
   lat: 51.1239,
   lng: 71.4302,
@@ -149,10 +149,186 @@ function buildImpactZone(lat, lng) {
   ];
 }
 
+export function buildRoadVisionPreparedTemplate({
+  file,
+  location = DEFAULT_ROADVISION_LOCATION,
+} = {}) {
+  const eventName = location.name || DEFAULT_ROADVISION_LOCATION.name;
+  const eventLat = Number(location.lat || DEFAULT_ROADVISION_LOCATION.lat);
+  const eventLng = Number(location.lng || DEFAULT_ROADVISION_LOCATION.lng);
+  const roadName = eventName.split("/")[0].trim();
+  const seed = `${file?.name || "roadvision-demo"}:${file?.size || 0}:${eventName}`;
+
+  return {
+    analysis_id: `rv-local-prepared-${stableNumber(seed, 10000, 99999)}`,
+    source: "roadvision_prepared",
+    created_at: new Date().toISOString(),
+    status: "requires_human_review",
+    event_confirmed: true,
+    uncertainty_reason: "",
+    video: {
+      filename: file?.name || "demo-dashcam.mp4",
+      content_type: file?.type || "video/mp4",
+      size_mb: Number(((file?.size || 0) / (1024 * 1024)).toFixed(2)),
+      duration_sec: 14.7,
+    },
+    location: {
+      name: eventName,
+      lat: eventLat,
+      lng: eventLng,
+      district: "Esil",
+      road: roadName,
+    },
+    scenario: {
+      key: "unknown",
+      title:
+        "ДТП при резком перестроении белого седана направо перед регистратором",
+      impact_type: "side_impact",
+    },
+    confidence: 91,
+    risk_score: 82,
+    detected_objects: {
+      vehicles: 2,
+      license_plates: 0,
+      pedestrians: 0,
+      lanes: 2,
+    },
+    analysis_quality: {
+      plate_recognition: "needs_manual_review",
+      timeline_source: "prepared_video_frames",
+      prepared_video_sha1: "local_frontend_template",
+      warnings: [
+        "Отчет подготовлен по ключевым кадрам демонстрационного видео.",
+        "Событие описано как ДТП: белый седан с левой полосы резко уходит направо перед автомобилем с регистратором.",
+        "Госномера в ролике не читаются надежно и оставлены на ручную проверку.",
+      ],
+    },
+    participants: [
+      {
+        id: "A",
+        label: "Vehicle A (регистратор)",
+        plate: "Требуется проверка",
+        plate_confidence: 0,
+        plate_status: "manual_review",
+        movement:
+          "движется прямо по правой полосе, когда белый седан с левой полосы смещается направо перед капотом",
+        speed_trend:
+          "плавное сближение, затем резкое торможение из-за перестроения белого седана перед регистратором",
+        role: "автомобиль с видеорегистратором",
+        color: "#2563eb",
+        violation_signs: [],
+      },
+      {
+        id: "B",
+        label: "Vehicle B (белый седан впереди)",
+        plate: "Требуется проверка",
+        plate_confidence: 0,
+        plate_status: "manual_review",
+        movement:
+          "движется с левой полосы и резко перестраивается направо перед Vehicle A",
+        speed_trend:
+          "резкое боковое смещение вправо без безопасного интервала перед контактом",
+        role: "попутный маневрирующий автомобиль",
+        color: "#dc2626",
+        violation_signs: [
+          "признаки опасного резкого перестроения направо перед автомобилем с регистратором",
+        ],
+      },
+    ],
+    timeline: [
+      {
+        time: "00:00.5",
+        observed_at_sec: 0.5,
+        title: "Начало сближения",
+        detail:
+          "Vehicle A движется за белым седаном Vehicle B; расстояние между ними постепенно сокращается.",
+        visual_evidence:
+          "белый седан находится непосредственно перед капотом регистратора",
+        level: "info",
+      },
+      {
+        time: "00:04",
+        observed_at_sec: 4,
+        title: "Белый седан готовится к смещению",
+        detail:
+          "Vehicle B находится перед регистратором левее траектории Vehicle A и начинает менять положение относительно полосы.",
+        visual_evidence:
+          "белый седан впереди расположен левее траектории регистратора",
+        level: "warning",
+      },
+      {
+        time: "00:06.5",
+        observed_at_sec: 6.5,
+        title: "Резкое перестроение направо",
+        detail:
+          "Белый седан Vehicle B резко смещается с левой полосы направо и перекрывает путь регистратору.",
+        visual_evidence:
+          "Vehicle B оказывается под углом перед капотом и входит в траекторию Vehicle A",
+        level: "warning",
+      },
+      {
+        time: "00:07",
+        observed_at_sec: 7,
+        title: "Момент ДТП",
+        detail:
+          "Vehicle B пересекает траекторию Vehicle A перед капотом, происходит контакт с автомобилем-регистратором.",
+        visual_evidence:
+          "белый седан занимает переднюю часть кадра вплотную к капоту регистратора",
+        level: "danger",
+      },
+      {
+        time: "00:09",
+        observed_at_sec: 9,
+        title: "Последствия маневра",
+        detail:
+          "После контакта Vehicle B уходит правее и вперед, Vehicle A продолжает движение с малой скоростью.",
+        visual_evidence:
+          "впереди формируется кратковременное замедление транспортного потока",
+        level: "warning",
+      },
+    ],
+    forensics: {
+      collision_point:
+        "передняя зона автомобиля с регистратором и боковая/задняя часть белого седана",
+      probable_cause:
+        "Предварительно: белый седан, двигаясь с левой полосы, резко перестроился направо перед автомобилем с видеорегистратором, перекрыл его траекторию и спровоцировал столкновение",
+      participant_with_violation_signs: "Vehicle B",
+      violation_summary:
+        "признаки резкого перестроения направо без безопасного интервала перед Vehicle A",
+      evidence: [
+        "00:04-00:06: белый седан находится левее траектории регистратора и начинает смещение",
+        "00:06.5-00:07: Vehicle B резко уходит направо в зону движения Vehicle A",
+        "00:07: белый седан находится вплотную перед капотом регистратора, фиксируется момент ДТП",
+      ],
+      legal_note:
+        "AI формирует предварительное аналитическое заключение. Юридическая виновность устанавливается только уполномоченным органом.",
+    },
+    traffic_impact: {
+      jam_probability: 58,
+      delay_minutes: 8,
+      affected_radius_m: 320,
+      lanes_blocked: "кратковременная блокировка правой полосы",
+      recovery_eta: "10 мин",
+    },
+    map_event: {
+      lat: eventLat,
+      lng: eventLng,
+      severity: "high",
+      impact_zone: buildImpactZone(eventLat, eventLng),
+      affected_roads: [roadName, "правая полоса движения"],
+    },
+    recommendations: [
+      "Проверить фрагмент 00:04-00:07, где белый седан с левой полосы резко уходит направо перед регистратором.",
+      "Отметить Vehicle B как участника с признаками нарушения при маневре и сохранить фрагмент момента ДТП.",
+      "При необходимости уточнить госномера по исходному видео вручную.",
+    ],
+  };
+}
+
 export function buildRoadVisionFallback({
   file,
   scenario = "left_turn_conflict",
-  location = DEFAULT_LOCATION,
+  location = DEFAULT_ROADVISION_LOCATION,
 } = {}) {
   const seed = `${file?.name || "demo-video"}:${file?.size || 0}:${scenario}`;
   const profile = scenarioProfiles[scenario] || scenarioProfiles.left_turn_conflict;
@@ -175,11 +351,11 @@ export function buildRoadVisionFallback({
       duration_sec: null,
     },
     location: {
-      name: location.name || DEFAULT_LOCATION.name,
-      lat: Number(location.lat || DEFAULT_LOCATION.lat),
-      lng: Number(location.lng || DEFAULT_LOCATION.lng),
+      name: location.name || DEFAULT_ROADVISION_LOCATION.name,
+      lat: Number(location.lat || DEFAULT_ROADVISION_LOCATION.lat),
+      lng: Number(location.lng || DEFAULT_ROADVISION_LOCATION.lng),
       district: "Esil",
-      road: (location.name || DEFAULT_LOCATION.name).split("/")[0].trim(),
+      road: (location.name || DEFAULT_ROADVISION_LOCATION.name).split("/")[0].trim(),
     },
     scenario: {
       key: scenario,
@@ -277,15 +453,15 @@ export function buildRoadVisionFallback({
       recovery_eta: `${delay + stableNumber(`${seed}:recovery`, 12, 24)} мин`,
     },
     map_event: {
-      lat: Number(location.lat || DEFAULT_LOCATION.lat),
-      lng: Number(location.lng || DEFAULT_LOCATION.lng),
+      lat: Number(location.lat || DEFAULT_ROADVISION_LOCATION.lat),
+      lng: Number(location.lng || DEFAULT_ROADVISION_LOCATION.lng),
       severity: riskScore >= 78 ? "high" : "medium",
       impact_zone: buildImpactZone(
-        Number(location.lat || DEFAULT_LOCATION.lat),
-        Number(location.lng || DEFAULT_LOCATION.lng),
+        Number(location.lat || DEFAULT_ROADVISION_LOCATION.lat),
+        Number(location.lng || DEFAULT_ROADVISION_LOCATION.lng),
       ),
       affected_roads: [
-        (location.name || DEFAULT_LOCATION.name).split("/")[0].trim(),
+        (location.name || DEFAULT_ROADVISION_LOCATION.name).split("/")[0].trim(),
         "Сыганак",
         "Туран",
       ],
@@ -301,16 +477,16 @@ export function buildRoadVisionFallback({
 export async function analyzeRoadVisionVideo({
   file,
   scenario = "unknown",
-  location = DEFAULT_LOCATION,
+  location = DEFAULT_ROADVISION_LOCATION,
   language = "ru",
   engine = "template",
 }) {
   const formData = new FormData();
   formData.append("video", file);
   formData.append("scenario", scenario);
-  formData.append("location_name", location.name || DEFAULT_LOCATION.name);
-  formData.append("lat", String(location.lat || DEFAULT_LOCATION.lat));
-  formData.append("lng", String(location.lng || DEFAULT_LOCATION.lng));
+  formData.append("location_name", location.name || DEFAULT_ROADVISION_LOCATION.name);
+  formData.append("lat", String(location.lat || DEFAULT_ROADVISION_LOCATION.lat));
+  formData.append("lng", String(location.lng || DEFAULT_ROADVISION_LOCATION.lng));
   formData.append("language", language);
   formData.append("engine", engine);
 

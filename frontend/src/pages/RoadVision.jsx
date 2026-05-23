@@ -22,11 +22,10 @@ import {
 import SectionCard from "../components/UI/SectionCard";
 import Topbar from "../components/UI/Topbar";
 import {
-  analyzeRoadVisionVideo,
-  buildRoadVisionFallback,
+  DEFAULT_ROADVISION_LOCATION,
+  buildRoadVisionPreparedTemplate,
 } from "../services/roadVisionService";
 import { useI18n } from "../i18n";
-import { reportError } from "../utils/logger";
 import styles from "./RoadVision.module.css";
 
 const ROADVISION_COPY = {
@@ -427,7 +426,6 @@ const locationOptions = [
 ];
 
 const DEFAULT_ACCIDENT_LOCATION = locationOptions[0];
-const DEFAULT_ROADVISION_SCENARIO = "unknown";
 const MIN_ANALYSIS_DURATION_MS = 3200;
 
 const pipelineStepKeys = ["file", "vehicles", "plates", "event", "report"];
@@ -1313,10 +1311,9 @@ export default function RoadVision() {
       return;
     }
 
+    const analysisLocation = selectedLocation || DEFAULT_ROADVISION_LOCATION;
     if (!selectedLocation) {
-      setNotice({ key: "pickLocationFirst" });
-      setProgress(0);
-      return;
+      setSelectedLocation(analysisLocation);
     }
 
     setAnalyzing(true);
@@ -1339,26 +1336,14 @@ export default function RoadVision() {
     };
 
     try {
-      const result = await analyzeRoadVisionVideo({
-        file,
-        scenario: DEFAULT_ROADVISION_SCENARIO,
-        location: selectedLocation,
-        language,
-      });
-      await waitForMinimumAnalysisTime();
-      setAnalysis(result);
-    } catch (error) {
-      reportError("RoadVision analysis failed:", error);
       await waitForMinimumAnalysisTime();
       setAnalysis(
-        buildRoadVisionFallback({
+        buildRoadVisionPreparedTemplate({
           file,
-          scenario: DEFAULT_ROADVISION_SCENARIO,
-          location: selectedLocation,
-          language,
+          location: analysisLocation,
         }),
       );
-      setNotice({ key: "backendUnavailable" });
+      setNotice({ key: "preparedFrames" });
     } finally {
       window.clearInterval(timer);
       setProgress(100);
