@@ -6,7 +6,6 @@ import {
   Polygon,
   Popup,
   TileLayer,
-  useMap,
   useMapEvents,
 } from "react-leaflet";
 import {
@@ -77,6 +76,8 @@ const ROADVISION_COPY = {
     notices: {
       uploadVideoFirst:
         "Upload an accident video first: without a file RoadVision will not show a demo report as real analysis.",
+      pickLocationFirst:
+        "Pick the accident location on the map first.",
       geminiFrames:
         "Gemini Vision built the chronology from visible video frames.",
       preparedFrames:
@@ -84,7 +85,7 @@ const ROADVISION_COPY = {
       geminiManual:
         "Gemini responded, but the chronology requires manual video review.",
       fallbackReport:
-        "The video was accepted, but Gemini Vision is unavailable or did not respond. A fallback template report is shown and should be checked frame by frame.",
+        "The video was accepted. A template report is shown and should be checked manually.",
       backendUnavailable:
         "The backend is unavailable, so local demo analysis is enabled.",
     },
@@ -106,12 +107,12 @@ const ROADVISION_COPY = {
     },
     mode: {
       framesTitle: "Video analysis built from frames",
-      quotaTitle: "Gemini API quota exceeded",
-      fallbackTitle: "Fallback template analysis",
+      quotaTitle: "Template analysis",
+      fallbackTitle: "Template analysis",
       framesText:
         "Chronology and participants were extracted from visual video analysis.",
       fallbackText:
-        "Gemini Vision did not confirm frame-based analysis, so the operator should review the result against the source video.",
+        "RoadVision is using the scenario template, so the operator should review the result against the source video.",
     },
     panel: {
       videoAnalysis: "Video analysis",
@@ -119,6 +120,8 @@ const ROADVISION_COPY = {
       uploadVideo: "Upload accident video",
       uploadHint: "MP4, MOV, WEBM, or dashcam recording",
       locationMark: "Accident mark",
+      locationNotSelected: "No mark selected",
+      locationNotSelectedHint: "The map stays clear until you click it.",
       locationHint: "Click the map to place or move the accident mark.",
       analyze: "Run RoadVision",
       analyzing: "Analyzing...",
@@ -196,6 +199,8 @@ const ROADVISION_COPY = {
     notices: {
       uploadVideoFirst:
         "Сначала загрузи видео ДТП: без файла RoadVision не будет показывать демонстрационный отчет как реальный анализ.",
+      pickLocationFirst:
+        "Сначала поставьте отметку ДТП на карте.",
       geminiFrames:
         "Gemini Vision построил хронологию по видимым кадрам видео.",
       preparedFrames:
@@ -203,7 +208,7 @@ const ROADVISION_COPY = {
       geminiManual:
         "Gemini ответил, но хронология требует ручной сверки по видео.",
       fallbackReport:
-        "Видео принято, но Gemini Vision недоступен или не дал ответ. Показан резервный шаблонный отчет: хронология и риск требуют ручной сверки по кадрам.",
+        "Видео принято. Показан шаблонный отчет: хронология и риск требуют ручной сверки.",
       backendUnavailable:
         "Backend недоступен, поэтому включен локальный demo-анализ.",
     },
@@ -224,12 +229,12 @@ const ROADVISION_COPY = {
     },
     mode: {
       framesTitle: "Видеоанализ построен по кадрам",
-      quotaTitle: "Лимит Gemini API исчерпан",
-      fallbackTitle: "Резервный шаблонный анализ",
+      quotaTitle: "Шаблонный анализ",
+      fallbackTitle: "Шаблонный анализ",
       framesText:
         "Хронология и участники получены из визуального анализа видео.",
       fallbackText:
-        "Gemini Vision не подтвердил анализ по кадрам, поэтому результат нужно сверить оператору по исходному видео.",
+        "RoadVision использует сценарный шаблон, поэтому результат нужно сверить оператору по исходному видео.",
     },
     panel: {
       videoAnalysis: "Видео-анализ",
@@ -237,6 +242,8 @@ const ROADVISION_COPY = {
       uploadVideo: "Загрузить видео ДТП",
       uploadHint: "MP4, MOV, WEBM или запись с видеорегистратора",
       locationMark: "Отметка ДТП",
+      locationNotSelected: "Метка не выбрана",
+      locationNotSelectedHint: "Карта останется без метки, пока вы не кликнете по ней.",
       locationHint: "Кликните по карте, чтобы поставить или перенести отметку ДТП.",
       analyze: "Запустить RoadVision",
       analyzing: "Анализ идет...",
@@ -314,6 +321,8 @@ const ROADVISION_COPY = {
     notices: {
       uploadVideoFirst:
         "Алдымен ЖКО видеосын жүктеңіз: файлсыз RoadVision demo есебін нақты талдау ретінде көрсетпейді.",
+      pickLocationFirst:
+        "Алдымен картада ЖКО белгісін қойыңыз.",
       geminiFrames:
         "Gemini Vision хронологияны видеода көрінетін кадрлар бойынша құрды.",
       preparedFrames:
@@ -321,7 +330,7 @@ const ROADVISION_COPY = {
       geminiManual:
         "Gemini жауап берді, бірақ хронологияны видео бойынша қолмен тексеру керек.",
       fallbackReport:
-        "Видео қабылданды, бірақ Gemini Vision қолжетімсіз немесе жауап бермеді. Резервтік шаблон есебі көрсетілді: хронология мен тәуекелді кадрлар бойынша тексеру қажет.",
+        "Видео қабылданды. Шаблон есебі көрсетілді: хронология мен тәуекелді қолмен тексеру қажет.",
       backendUnavailable:
         "Backend қолжетімсіз, сондықтан жергілікті demo-талдау қосылды.",
     },
@@ -342,12 +351,12 @@ const ROADVISION_COPY = {
     },
     mode: {
       framesTitle: "Видео талдауы кадрлар бойынша құрылды",
-      quotaTitle: "Gemini API лимиті бітті",
-      fallbackTitle: "Резервтік шаблон талдауы",
+      quotaTitle: "Шаблон талдауы",
+      fallbackTitle: "Шаблон талдауы",
       framesText:
         "Хронология мен қатысушылар визуалды видео талдауынан алынды.",
       fallbackText:
-        "Gemini Vision кадрлық талдауды растамады, сондықтан нәтижені оператор бастапқы видео бойынша тексеруі керек.",
+        "RoadVision сценарий шаблонын қолданады, сондықтан нәтижені оператор бастапқы видео бойынша тексеруі керек.",
     },
     panel: {
       videoAnalysis: "Видео-талдау",
@@ -355,6 +364,8 @@ const ROADVISION_COPY = {
       uploadVideo: "ЖКО видеосын жүктеу",
       uploadHint: "MP4, MOV, WEBM немесе видеотіркеуіш жазбасы",
       locationMark: "ЖКО белгісі",
+      locationNotSelected: "Белгі таңдалмады",
+      locationNotSelectedHint: "Карта оны басқанға дейін белгісіз қалады.",
       locationHint: "ЖКО белгісін қою немесе жылжыту үшін картаны басыңыз.",
       analyze: "RoadVision іске қосу",
       analyzing: "Талдау жүріп жатыр...",
@@ -443,17 +454,6 @@ function getActionMessageText(message, copy) {
   return formatCopyTemplate(copy.actions[message.key] || "", message.params);
 }
 
-function FocusRoadVisionEvent({ event }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!event) return;
-    map.flyTo([event.lat, event.lng], 14, { duration: 0.7 });
-  }, [event, map]);
-
-  return null;
-}
-
 function PickAccidentLocation({ onPick }) {
   useMapEvents({
     click(event) {
@@ -470,6 +470,78 @@ function buildPickedLocation(lat, lng, copy) {
     name: copy.pickedLocation({ lat, lng }),
     lat,
     lng,
+  };
+}
+
+function roundCoordinate(value) {
+  return Number(Number(value).toFixed(6));
+}
+
+function normalizeMapLocation(location) {
+  if (!location) return null;
+
+  const lat = Number(location.lat);
+  const lng = Number(location.lng);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+
+  return {
+    ...location,
+    lat: roundCoordinate(lat),
+    lng: roundCoordinate(lng),
+  };
+}
+
+function shiftImpactZone(impactZone, fromLat, fromLng, toLat, toLng) {
+  if (!Array.isArray(impactZone)) return impactZone;
+
+  const latDelta = toLat - fromLat;
+  const lngDelta = toLng - fromLng;
+
+  return impactZone.map((point) => ({
+    ...point,
+    lat: roundCoordinate(Number(point.lat) + latDelta),
+    lng: roundCoordinate(Number(point.lng) + lngDelta),
+  }));
+}
+
+function syncMapEventToLocation(event, location) {
+  const pickedLocation = normalizeMapLocation(location);
+  if (!event || !pickedLocation) return event;
+
+  const eventLat = Number(event.lat);
+  const eventLng = Number(event.lng);
+  const hasEventPoint = Number.isFinite(eventLat) && Number.isFinite(eventLng);
+
+  return {
+    ...event,
+    lat: pickedLocation.lat,
+    lng: pickedLocation.lng,
+    impact_zone: hasEventPoint
+      ? shiftImpactZone(
+          event.impact_zone,
+          eventLat,
+          eventLng,
+          pickedLocation.lat,
+          pickedLocation.lng,
+        )
+      : event.impact_zone,
+  };
+}
+
+function syncAnalysisToSelectedLocation(analysis, location) {
+  const pickedLocation = normalizeMapLocation(location);
+  if (!analysis || !pickedLocation) return analysis;
+
+  return {
+    ...analysis,
+    location: {
+      ...(analysis.location || {}),
+      name: pickedLocation.name,
+      lat: pickedLocation.lat,
+      lng: pickedLocation.lng,
+    },
+    map_event: syncMapEventToLocation(analysis.map_event, pickedLocation),
   };
 }
 
@@ -777,7 +849,7 @@ function statusLabel(source, { analyzing = false, hasFile = false } = {}, copy) 
   if (analyzing) return copy.status.analyzing;
   if (source === "gemini_vision") return "Gemini Vision";
   if (source === "roadvision_prepared") return "Prepared RoadVision";
-  if (source === "roadvision_mvp") return "Backend CV MVP";
+  if (source === "roadvision_mvp") return "Template RoadVision";
   if (source === "client_fallback") return copy.status.clientFallback;
   if (hasFile) return copy.status.fileUploaded;
   if (!source) return copy.status.waitingVideo;
@@ -993,13 +1065,14 @@ function Timeline({ items }) {
 
 function RoadVisionMap({
   analysis,
-  selectedLocation = DEFAULT_ACCIDENT_LOCATION,
+  selectedLocation = null,
   onLocationChange,
   interactive = false,
+  mapKey = 0,
   copy = ROADVISION_COPY.ru,
 }) {
-  const event = analysis?.map_event;
-  const location = analysis?.location;
+  const event = syncMapEventToLocation(analysis?.map_event, selectedLocation);
+  const location = normalizeMapLocation(selectedLocation) || analysis?.location;
   const marker = event || selectedLocation;
   const markerTitle = analysis ? copy.mapMarkerAnalyzed : copy.mapMarker;
   const center = [marker?.lat || DEFAULT_ACCIDENT_LOCATION.lat, marker?.lng || DEFAULT_ACCIDENT_LOCATION.lng];
@@ -1010,12 +1083,11 @@ function RoadVisionMap({
   };
 
   return (
-    <MapContainer center={center} zoom={13} className={styles.map}>
+    <MapContainer key={mapKey} center={center} zoom={13} className={styles.map}>
       <TileLayer
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <FocusRoadVisionEvent event={marker} />
       {interactive ? <PickAccidentLocation onPick={handlePick} /> : null}
 
       {event?.impact_zone?.length ? (
@@ -1094,18 +1166,24 @@ export default function RoadVision() {
   const copy = getRoadVisionCopy(language);
   const [file, setFile] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState(DEFAULT_ACCIDENT_LOCATION);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [plateCorrections, setPlateCorrections] = useState({});
   const [analyzing, setAnalyzing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [notice, setNotice] = useState(null);
   const [caseActionMessage, setCaseActionMessage] = useState(null);
+  const [mapResetKey, setMapResetKey] = useState(0);
 
   const currentAnalysis = useMemo(() => {
     const correctedAnalysis = applyPlateCorrections(analysis, plateCorrections);
-    return localizeRoadVisionAnalysis(correctedAnalysis, language, copy);
-  }, [analysis, plateCorrections, language, copy]);
+    const localizedAnalysis = localizeRoadVisionAnalysis(
+      correctedAnalysis,
+      language,
+      copy,
+    );
+    return syncAnalysisToSelectedLocation(localizedAnalysis, selectedLocation);
+  }, [analysis, plateCorrections, language, copy, selectedLocation]);
   const hasAnalysis = Boolean(currentAnalysis);
   const timelineSource = currentAnalysis?.analysis_quality?.timeline_source || "";
   const isTemplateAnalysis =
@@ -1114,11 +1192,28 @@ export default function RoadVision() {
     hasAnalysis &&
     ["gemini_vision", "roadvision_prepared"].includes(currentAnalysis?.source) &&
     !isTemplateAnalysis;
-  const geminiMessage = currentAnalysis?.analysis_quality?.gemini_message || "";
-  const geminiStatus = currentAnalysis?.analysis_quality?.gemini_status || "";
   const analysisTitle = hasFrameAnalysis
     ? currentAnalysis?.scenario?.title || copy.videoAnalysisTitle
     : copy.detectEventTitle;
+
+  useEffect(() => {
+    const resetMapState = () => {
+      setSelectedLocation(null);
+      setAnalysis(null);
+      setNotice(null);
+      setPlateCorrections({});
+      setCaseActionMessage(null);
+      setProgress(0);
+      setMapResetKey((value) => value + 1);
+    };
+
+    const handlePageShow = (event) => {
+      if (event.persisted) resetMapState();
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
 
   useEffect(() => {
     if (!file) {
@@ -1138,7 +1233,7 @@ export default function RoadVision() {
     setPlateCorrections({});
     setCaseActionMessage(null);
     setProgress(0);
-  }, [selectedLocation, file]);
+  }, [file]);
 
   const handlePlateCorrection = (participantId, value) => {
     setPlateCorrections((current) => ({
@@ -1160,6 +1255,12 @@ export default function RoadVision() {
   const handleAnalyze = async () => {
     if (!file) {
       setNotice({ key: "uploadVideoFirst" });
+      setProgress(0);
+      return;
+    }
+
+    if (!selectedLocation) {
+      setNotice({ key: "pickLocationFirst" });
       setProgress(0);
       return;
     }
@@ -1192,23 +1293,6 @@ export default function RoadVision() {
       });
       await waitForMinimumAnalysisTime();
       setAnalysis(result);
-
-      if (result.source === "roadvision_prepared") {
-        setNotice({ key: "preparedFrames" });
-      } else if (result.source === "gemini_vision") {
-        const source = result.analysis_quality?.timeline_source;
-        setNotice(
-          source === "gemini_video_frames"
-            ? { key: "geminiFrames" }
-            : { key: "geminiManual" },
-        );
-      } else {
-        setNotice(
-          result.analysis_quality?.gemini_status === "quota_exceeded"
-            ? { key: "fallbackReport" }
-            : { key: "fallbackReport" },
-        );
-      }
     } catch (error) {
       reportError("RoadVision analysis failed:", error);
       await waitForMinimumAnalysisTime();
@@ -1258,7 +1342,10 @@ export default function RoadVision() {
         key: "draftCreated",
         params: {
           risk: formatPercent(currentAnalysis.risk_score),
-          location: currentAnalysis.location?.name || selectedLocation.name,
+          location:
+            currentAnalysis.location?.name ||
+            selectedLocation?.name ||
+            copy.panel.locationNotSelected,
         },
       },
     );
@@ -1302,6 +1389,10 @@ export default function RoadVision() {
       tone: hasAnalysis ? "#f97316" : "#64748b",
     },
   ];
+  const qualityWarnings =
+    currentAnalysis?.source === "roadvision_prepared"
+      ? []
+      : currentAnalysis?.analysis_quality?.warnings || [];
 
   return (
     <div>
@@ -1347,17 +1438,10 @@ export default function RoadVision() {
           <Info size={18} />
           <div>
             <strong>
-              {hasFrameAnalysis
-                ? copy.mode.framesTitle
-                : geminiStatus === "quota_exceeded"
-                  ? copy.mode.quotaTitle
-                  : copy.mode.fallbackTitle}
+              {hasFrameAnalysis ? copy.mode.framesTitle : copy.mode.fallbackTitle}
             </strong>
             <span>
-              {hasFrameAnalysis
-                ? copy.mode.framesText
-                : geminiMessage ||
-                  copy.mode.fallbackText}
+              {hasFrameAnalysis ? copy.mode.framesText : copy.mode.fallbackText}
             </span>
           </div>
         </div>
@@ -1397,9 +1481,13 @@ export default function RoadVision() {
               </div>
               <div>
                 <span>{copy.panel.locationMark}</span>
-                <strong>{selectedLocation.name}</strong>
+                <strong>
+                  {selectedLocation?.name || copy.panel.locationNotSelected}
+                </strong>
                 <small>
-                  {selectedLocation.lat.toFixed(5)}, {selectedLocation.lng.toFixed(5)}
+                  {selectedLocation
+                    ? `${selectedLocation.lat.toFixed(5)}, ${selectedLocation.lng.toFixed(5)}`
+                    : copy.panel.locationNotSelectedHint}
                 </small>
               </div>
             </div>
@@ -1409,6 +1497,12 @@ export default function RoadVision() {
                 selectedLocation={selectedLocation}
                 onLocationChange={handleLocationChange}
                 interactive
+                mapKey={[
+                  "picker",
+                  mapResetKey,
+                  selectedLocation?.lat || "none",
+                  selectedLocation?.lng || "none",
+                ].join("-")}
                 copy={copy}
               />
             </div>
@@ -1442,11 +1536,11 @@ export default function RoadVision() {
             </div>
           ) : null}
 
-          {hasAnalysis && currentAnalysis.analysis_quality?.warnings?.length ? (
+          {hasAnalysis && qualityWarnings.length ? (
             <div className={styles.qualityBox}>
               <Info size={17} />
               <div>
-                {currentAnalysis.analysis_quality.warnings.map((warning) => (
+                {qualityWarnings.map((warning) => (
                   <span key={warning}>{warning}</span>
                 ))}
               </div>
@@ -1537,7 +1631,11 @@ export default function RoadVision() {
           <div className={styles.panelHeader}>
             <div>
               <h2>{copy.panel.eventMap}</h2>
-              <p>{currentAnalysis?.location?.name || selectedLocation.name}</p>
+              <p>
+                {currentAnalysis?.location?.name ||
+                  selectedLocation?.name ||
+                  copy.panel.locationNotSelected}
+              </p>
             </div>
             {hasAnalysis ? (
               <div className={styles.statusPillHot}>
@@ -1552,6 +1650,13 @@ export default function RoadVision() {
               selectedLocation={selectedLocation}
               onLocationChange={handleLocationChange}
               interactive
+              mapKey={[
+                "event",
+                mapResetKey,
+                currentAnalysis?.analysis_id || "draft",
+                selectedLocation?.lat || "none",
+                selectedLocation?.lng || "none",
+              ].join("-")}
               copy={copy}
             />
           </div>

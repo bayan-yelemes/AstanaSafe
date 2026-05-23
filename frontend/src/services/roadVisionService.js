@@ -303,6 +303,7 @@ export async function analyzeRoadVisionVideo({
   scenario = "unknown",
   location = DEFAULT_LOCATION,
   language = "ru",
+  engine = "template",
 }) {
   const formData = new FormData();
   formData.append("video", file);
@@ -311,6 +312,7 @@ export async function analyzeRoadVisionVideo({
   formData.append("lat", String(location.lat || DEFAULT_LOCATION.lat));
   formData.append("lng", String(location.lng || DEFAULT_LOCATION.lng));
   formData.append("language", language);
+  formData.append("engine", engine);
 
   const { data } = await api.post("/roadvision/analyze", formData);
   return data;

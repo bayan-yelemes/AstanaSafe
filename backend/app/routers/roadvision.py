@@ -2,11 +2,7 @@ from typing import Optional
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from ..services.roadvision import (
-    analyze_video_with_gemini,
-    build_roadvision_analysis,
-    find_prepared_roadvision_analysis,
-)
+from ..services.roadvision import build_roadvision_analysis
 
 router = APIRouter(prefix="/roadvision", tags=["roadvision"])
 
@@ -20,7 +16,7 @@ async def analyze_roadvision_video(
     location_name: str = Form("Кабанбай батыра / Сыганак"),
     lat: Optional[float] = Form(None),
     lng: Optional[float] = Form(None),
-    engine: str = Form("auto"),
+    engine: str = Form("template"),
     language: str = Form("ru"),
 ):
     content = await video.read()
@@ -33,39 +29,6 @@ async def analyze_roadvision_video(
 
     filename = video.filename or "uploaded-video.mp4"
     content_type = video.content_type or "video/mp4"
-
-    prepared_result = find_prepared_roadvision_analysis(
-        video_bytes=content,
-        filename=filename,
-        content_type=content_type,
-        location_name=location_name,
-        lat=lat,
-        lng=lng,
-    )
-    if prepared_result is not None:
-        return prepared_result
-
-    if engine in {"auto", "gemini"}:
-        gemini_result = analyze_video_with_gemini(
-            video_bytes=content,
-            filename=filename,
-            content_type=content_type,
-            scenario=scenario,
-            location_name=location_name,
-            lat=lat,
-            lng=lng,
-            language=language,
-            return_fallback_on_error=engine == "auto",
-        )
-
-        if gemini_result is not None:
-            return gemini_result
-
-        if engine == "gemini":
-            raise HTTPException(
-                status_code=503,
-                detail="Gemini video analysis is unavailable right now.",
-            )
 
     return build_roadvision_analysis(
         filename=filename,
