@@ -169,7 +169,7 @@ export default function Sidebar({ collapsed = false, onToggle = () => {} }) {
           }}
         >
           <div className={styles.sidebarStyle2}>
-            <ShieldAlert size={22} />
+            <ShieldAlert size={22} color="#ffffff" strokeWidth={2.2} />
           </div>
 
           {!collapsed && (

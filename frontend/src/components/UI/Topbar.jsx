@@ -94,7 +94,7 @@ export default function Topbar({
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
-            dateFormat="MMMM d, yyyy"
+            dateFormat="d MMMM, yyyy"
             locale={dateLocales[language] || enGB}
             wrapperClassName="topbar-datepicker"
             popperClassName="app-datepicker-popper"

@@ -42,7 +42,7 @@ export default function AuthRequired({ onSignIn }) {
         <div className={styles.content}>
           <div className={styles.brand}>
             <span className={styles.brandIcon}>
-              <ShieldAlert size={22} />
+              <ShieldAlert size={22} color="#ffffff" strokeWidth={2.2} />
             </span>
             <div>
               <strong>AstanaSafe</strong>
