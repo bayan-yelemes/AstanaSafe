@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from datetime import datetime, timezone
 from hashlib import sha1
 import json
@@ -416,6 +417,559 @@ def build_prepared_roadvision_analysis(
     })
 
 
+PREPARED_ROADVISION_VIDEO_REPORTS = {
+    "video1": {
+        "sha1": "a190687ac9c4f558e5b3ef9109602814add63e37",
+        "duration_sec": 5.0,
+        "scenario": {
+            "key": "prepared_video1",
+            "title": "Столкновение на перекрестке с белым служебным фургоном",
+            "impact_type": "intersection_conflict",
+        },
+        "confidence": 94,
+        "risk_score": 88,
+        "event_confirmed": True,
+        "uncertainty_reason": "",
+        "detected_objects": {
+            "vehicles": 3,
+            "license_plates": 0,
+            "pedestrians": 0,
+            "lanes": 3,
+        },
+        "participants": [
+            {
+                "id": "A",
+                "label": "Vehicle A (регистратор)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "подъезжает к регулируемому перекрестку и движется прямо в сторону стоп-линии",
+                "speed_trend": "до контакта сохраняет ход, после удара резко теряет устойчивость",
+                "role": "автомобиль с видеорегистратором",
+                "color": "#2563eb",
+                "violation_signs": [],
+            },
+            {
+                "id": "B",
+                "label": "Vehicle B (белый фургон/служебный автомобиль)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "выезжает слева в зону движения автомобиля с регистратором",
+                "speed_trend": "пересекает траекторию Vehicle A непосредственно перед столкновением",
+                "role": "поперечный участник конфликта",
+                "color": "#dc2626",
+                "violation_signs": [
+                    "признаки выезда на конфликтную траекторию перед автомобилем с регистратором"
+                ],
+            },
+        ],
+        "timeline": [
+            {
+                "time": "00:00-00:01",
+                "observed_at_sec": 1,
+                "title": "Подъезд к перекрестку",
+                "detail": "Vehicle A подъезжает к перекрестку; впереди видны светофоры и другие автомобили.",
+                "visual_evidence": "в кадре видны светофоры, перекресток и поток впереди",
+                "level": "info",
+            },
+            {
+                "time": "00:01-00:02",
+                "observed_at_sec": 2,
+                "title": "Фургон выходит слева",
+                "detail": "Белый фургон Vehicle B появляется слева и входит в зону движения Vehicle A.",
+                "visual_evidence": "белый служебный автомобиль смещается слева поперек траектории регистратора",
+                "level": "warning",
+            },
+            {
+                "time": "00:02",
+                "observed_at_sec": 2,
+                "title": "Момент столкновения",
+                "detail": "Контакт приходится в переднюю часть автомобиля с регистратором.",
+                "visual_evidence": "после сближения кадр резко дергается и направление камеры уходит вверх",
+                "level": "danger",
+            },
+            {
+                "time": "00:03-00:05",
+                "observed_at_sec": 4,
+                "title": "Остановка после удара",
+                "detail": "Камера направлена в небо, видны светофоры и дорожные знаки; движение прекращается.",
+                "visual_evidence": "в кадре остаются небо, элементы светофора и знаки вместо дороги",
+                "level": "warning",
+            },
+        ],
+        "forensics": {
+            "collision_point": "передняя часть автомобиля с регистратором и боковая зона белого фургона",
+            "probable_cause": (
+                "Предварительно: белый фургон/служебный автомобиль выехал слева на перекрестке "
+                "в траекторию Vehicle A, после чего произошел удар в переднюю часть автомобиля с регистратором"
+            ),
+            "participant_with_violation_signs": "Vehicle B",
+            "violation_summary": "признаки выезда на конфликтную траекторию перед автомобилем с регистратором",
+            "evidence": [
+                "00:01-00:02: белый фургон появляется слева в зоне движения Vehicle A",
+                "00:02: фиксируется резкий удар и потеря устойчивости камеры",
+                "00:03-00:05: камера направлена вверх, движение автомобиля прекращается",
+            ],
+        },
+        "traffic_impact": {
+            "jam_probability": 72,
+            "delay_minutes": 12,
+            "affected_radius_m": 420,
+            "lanes_blocked": "зона перекрестка частично заблокирована",
+            "recovery_eta": "18 мин",
+        },
+        "warnings": [
+            "Отчет подготовлен по шаблону для video1.mov.",
+            "Зафиксировано ДТП на перекрестке: белый фургон выезжает слева и происходит удар в переднюю часть автомобиля с регистратором.",
+            "После удара камера разворачивается вверх, поэтому финальная позиция участников требует ручной сверки.",
+        ],
+        "recommendations": [
+            "Проверить фрагмент 00:01-00:02, где белый фургон появляется слева перед автомобилем с регистратором.",
+            "Сохранить момент 00:02 как ключевой кадр столкновения.",
+            "Уточнить фазу светофора и дорожные знаки по исходному видео.",
+        ],
+        "affected_roads": ["перекресток", "подход к перекрестку"],
+    },
+    "video2": {
+        "sha1": "ca474809e0c1586b8e2c114415dd59bbab38a685",
+        "duration_sec": 7.0,
+        "scenario": {
+            "key": "prepared_video2",
+            "title": "Попутное столкновение: черный автомобиль врезается в серый автомобиль",
+            "impact_type": "rear_end",
+        },
+        "confidence": 92,
+        "risk_score": 82,
+        "event_confirmed": True,
+        "uncertainty_reason": "",
+        "detected_objects": {
+            "vehicles": 4,
+            "license_plates": 0,
+            "pedestrians": 0,
+            "lanes": 3,
+        },
+        "participants": [
+            {
+                "id": "A",
+                "label": "Vehicle A (серый автомобиль впереди)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "движется впереди в правой полосе и перед ударом снижает скорость/тормозит",
+                "speed_trend": "заметное замедление перед моментом контакта, затем смещение вперед/в сторону после удара",
+                "role": "пострадавший автомобиль впереди",
+                "color": "#2563eb",
+                "violation_signs": [],
+            },
+            {
+                "id": "B",
+                "label": "Vehicle B (черный автомобиль слева)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "появляется слева, перестраивается из левой полосы в правую и на скорости сближается с серым автомобилем",
+                "speed_trend": "не успевает безопасно снизить скорость при перестроении и достигает задней части Vehicle A",
+                "role": "попутный автомобиль, перестраивающийся перед ударом",
+                "color": "#dc2626",
+                "violation_signs": [
+                    "признаки небезопасного перестроения и несоблюдения дистанции перед серым автомобилем"
+                ],
+            },
+            {
+                "id": "C",
+                "label": "Vehicle C (регистратор)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "движется позади и фиксирует ДТП впереди без участия в столкновении",
+                "speed_trend": "движется вместе с потоком и наблюдает последствия впереди",
+                "role": "автомобиль с видеорегистратором, не участник ДТП",
+                "color": "#0891b2",
+                "violation_signs": [],
+            },
+        ],
+        "timeline": [
+            {
+                "time": "00:00-00:03",
+                "observed_at_sec": 3,
+                "title": "Регистратор фиксирует поток впереди",
+                "detail": "Автомобиль с регистратором движется по дороге и фиксирует обстановку впереди; сам регистратор не является участником ДТП.",
+                "visual_evidence": "камера расположена позади основной зоны будущего столкновения",
+                "level": "info",
+            },
+            {
+                "time": "00:03-00:04",
+                "observed_at_sec": 4,
+                "title": "Серый автомобиль тормозит",
+                "detail": "Впереди в правой полосе серый автомобиль Vehicle A начинает тормозить или заметно снижает скорость.",
+                "visual_evidence": "серый автомобиль впереди уменьшает скорость относительно потока",
+                "level": "warning",
+            },
+            {
+                "time": "00:04-00:05",
+                "observed_at_sec": 5,
+                "title": "Черный автомобиль перестраивается направо",
+                "detail": "Черный автомобиль Vehicle B появляется слева и начинает перестраиваться из левой полосы в правую к серому автомобилю.",
+                "visual_evidence": "черный автомобиль смещается из левой полосы в правую перед регистратором",
+                "level": "warning",
+            },
+            {
+                "time": "00:05",
+                "observed_at_sec": 5,
+                "title": "Удар в заднюю часть",
+                "detail": "Vehicle B не успевает безопасно перестроиться и на скорости врезается в заднюю часть серого автомобиля Vehicle A.",
+                "visual_evidence": "черный автомобиль достигает задней части серого автомобиля в правой полосе",
+                "level": "danger",
+            },
+            {
+                "time": "00:05-00:07",
+                "observed_at_sec": 7,
+                "title": "Смещение после удара",
+                "detail": "После удара серый автомобиль смещается вперед/в сторону, черный автомобиль остается рядом с ним.",
+                "visual_evidence": "оба автомобиля остаются впереди регистратора после контакта",
+                "level": "warning",
+            },
+        ],
+        "forensics": {
+            "collision_point": "задняя часть серого автомобиля и передняя часть черного автомобиля",
+            "probable_cause": (
+                "Предварительно: черный автомобиль перестраивался из левой полосы в правую, "
+                "не успел безопасно снизить скорость и врезался в заднюю часть серого автомобиля, "
+                "который впереди снижал скорость или тормозил"
+            ),
+            "participant_with_violation_signs": "Vehicle B",
+            "violation_summary": "признаки небезопасного перестроения и несоблюдения дистанции со стороны черного автомобиля",
+            "evidence": [
+                "00:03-00:04: серый автомобиль впереди начинает снижать скорость",
+                "00:04-00:05: черный автомобиль перестраивается из левой полосы в правую",
+                "00:05: черный автомобиль достигает задней части серого автомобиля",
+                "00:05-00:07: серый автомобиль смещается после удара, черный автомобиль остается рядом",
+            ],
+        },
+        "traffic_impact": {
+            "jam_probability": 68,
+            "delay_minutes": 10,
+            "affected_radius_m": 430,
+            "lanes_blocked": "правая полоса частично заблокирована после попутного столкновения",
+            "recovery_eta": "16 мин",
+        },
+        "warnings": [
+            "Отчет подготовлен по шаблону для video2.mov.",
+            "Регистратор не является участником ДТП: он фиксирует столкновение впереди.",
+            "Событие описано как попутный удар: черный автомобиль перестраивается слева направо и врезается в заднюю часть серого автомобиля.",
+        ],
+        "recommendations": [
+            "Проверить фрагмент 00:03-00:05, где серый автомобиль тормозит, а черный автомобиль перестраивается из левой полосы.",
+            "Сохранить кадр около 00:05 как момент удара в заднюю часть серого автомобиля.",
+            "Отдельно отметить в карточке, что автомобиль с регистратором является наблюдателем, а не участником ДТП.",
+        ],
+        "affected_roads": ["правая полоса", "левая полоса перед перестроением"],
+    },
+    "video3": {
+        "sha1": "fc00d547be37b58702f120e60d66cc29930ba72e",
+        "duration_sec": 9.0,
+        "scenario": {
+            "key": "prepared_video3",
+            "title": "Боковое столкновение с серебристым автомобилем на перекрестке",
+            "impact_type": "side_impact",
+        },
+        "confidence": 93,
+        "risk_score": 86,
+        "event_confirmed": True,
+        "uncertainty_reason": "",
+        "detected_objects": {
+            "vehicles": 3,
+            "license_plates": 0,
+            "pedestrians": 0,
+            "lanes": 4,
+        },
+        "participants": [
+            {
+                "id": "A",
+                "label": "Vehicle A (регистратор)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "стоит или начинает движение на перекрестке и продолжает прямо",
+                "speed_trend": "скорость увеличивается перед контактом, затем резко снижается",
+                "role": "автомобиль с видеорегистратором",
+                "color": "#2563eb",
+                "violation_signs": [],
+            },
+            {
+                "id": "B",
+                "label": "Vehicle B (серебристый автомобиль)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "въезжает слева и пересекает траекторию Vehicle A поперек перекрестка",
+                "speed_trend": "движется поперек перекрестка непосредственно перед боковым ударом",
+                "role": "поперечный участник конфликта",
+                "color": "#dc2626",
+                "violation_signs": [
+                    "признаки пересечения траектории автомобиля с регистратором в конфликтной зоне"
+                ],
+            },
+        ],
+        "timeline": [
+            {
+                "time": "00:00-00:04",
+                "observed_at_sec": 4,
+                "title": "Ожидание или старт на перекрестке",
+                "detail": "Vehicle A находится на перекрестке или начинает движение; впереди видна широкая проезжая часть и светофоры.",
+                "visual_evidence": "в кадре видны широкая зона перекрестка и светофоры",
+                "level": "info",
+            },
+            {
+                "time": "00:05",
+                "observed_at_sec": 5,
+                "title": "Серебристый автомобиль выезжает слева",
+                "detail": "Vehicle B появляется слева и движется поперек перекрестка перед автомобилем с регистратором.",
+                "visual_evidence": "серебристая машина входит в кадр слева и пересекает направление движения Vehicle A",
+                "level": "warning",
+            },
+            {
+                "time": "00:06",
+                "observed_at_sec": 6,
+                "title": "Боковое столкновение",
+                "detail": "Серебристый автомобиль оказывается прямо перед Vehicle A, удар приходится в его бок.",
+                "visual_evidence": "серебристый автомобиль перекрывает переднюю часть траектории регистратора",
+                "level": "danger",
+            },
+            {
+                "time": "00:06-00:09",
+                "observed_at_sec": 8,
+                "title": "Смещение после удара",
+                "detail": "После контакта серебристый автомобиль продолжает смещаться вправо; на дороге видны мелкие обломки.",
+                "visual_evidence": "серебристый автомобиль уходит вправо, на проезжей части видны следы/обломки",
+                "level": "warning",
+            },
+        ],
+        "forensics": {
+            "collision_point": "передняя зона Vehicle A и боковая часть серебристого автомобиля",
+            "probable_cause": (
+                "Предварительно: серебристый автомобиль въехал слева на перекресток и пересек траекторию "
+                "автомобиля с регистратором, что привело к боковому столкновению"
+            ),
+            "participant_with_violation_signs": "Vehicle B",
+            "violation_summary": "признаки выезда поперек траектории Vehicle A в конфликтной зоне перекрестка",
+            "evidence": [
+                "00:05: серебристый автомобиль появляется слева и пересекает перекресток",
+                "00:06: Vehicle B оказывается прямо перед Vehicle A, фиксируется боковой удар",
+                "00:06-00:09: серебристый автомобиль смещается вправо, видны мелкие обломки",
+            ],
+        },
+        "traffic_impact": {
+            "jam_probability": 70,
+            "delay_minutes": 11,
+            "affected_radius_m": 460,
+            "lanes_blocked": "конфликтная зона перекрестка",
+            "recovery_eta": "17 мин",
+        },
+        "warnings": [
+            "Отчет подготовлен по шаблону для video3.mov.",
+            "Зафиксировано боковое столкновение с серебристым автомобилем, пересекающим траекторию регистратора.",
+            "Необходимо вручную сверить фазу светофора и приоритет движения.",
+        ],
+        "recommendations": [
+            "Проверить фрагмент 00:05-00:06, где серебристый автомобиль входит слева перед Vehicle A.",
+            "Сохранить кадр бокового удара около 00:06.",
+            "Уточнить дорожную фазу перекрестка по светофорам и знакам.",
+        ],
+        "affected_roads": ["перекресток", "поперечное направление"],
+    },
+    "video4": {
+        "sha1": "85db4f3bed5b15dfe89b8366ac05ea13c57536bb",
+        "duration_sec": 10.0,
+        "scenario": {
+            "key": "prepared_video4",
+            "title": "Опасное сближение с белым пикапом впереди",
+            "impact_type": "rear_end",
+        },
+        "confidence": 78,
+        "risk_score": 66,
+        "event_confirmed": False,
+        "uncertainty_reason": "контакт с задней частью пикапа визуально не подтвержден; уверенно видно резкое сокращение дистанции",
+        "detected_objects": {
+            "vehicles": 4,
+            "license_plates": 0,
+            "pedestrians": 0,
+            "lanes": 3,
+        },
+        "participants": [
+            {
+                "id": "A",
+                "label": "Vehicle A (регистратор)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "движется по правой полосе и быстро сближается с белым пикапом впереди",
+                "speed_trend": "дистанция резко сокращается, затем скорость снижается",
+                "role": "автомобиль с видеорегистратором",
+                "color": "#2563eb",
+                "violation_signs": [
+                    "признаки несоблюдения безопасной дистанции при резком сближении"
+                ],
+            },
+            {
+                "id": "B",
+                "label": "Vehicle B (белый пикап впереди)",
+                "plate": "Требуется проверка",
+                "plate_confidence": 0,
+                "plate_status": "manual_review",
+                "movement": "смещается в полосу перед Vehicle A или замедляется в правой полосе",
+                "speed_trend": "после перестроения/замедления продолжает движение впереди регистратора",
+                "role": "попутный автомобиль впереди",
+                "color": "#dc2626",
+                "violation_signs": [],
+            },
+        ],
+        "timeline": [
+            {
+                "time": "00:00-00:03",
+                "observed_at_sec": 3,
+                "title": "Движение за пикапами",
+                "detail": "Vehicle A движется по правой полосе; впереди справа едет белый пикап, слева виден другой пикап.",
+                "visual_evidence": "в кадре видны белый пикап впереди справа и другой пикап слева",
+                "level": "info",
+            },
+            {
+                "time": "00:03-00:04",
+                "observed_at_sec": 4,
+                "title": "Пикап оказывается перед регистратором",
+                "detail": "Белый пикап Vehicle B смещается в полосу перед Vehicle A.",
+                "visual_evidence": "Vehicle B занимает полосу непосредственно перед капотом регистратора",
+                "level": "warning",
+            },
+            {
+                "time": "00:04-00:05",
+                "observed_at_sec": 5,
+                "title": "Резкое сокращение дистанции",
+                "detail": "Дистанция до задней части пикапа быстро сокращается; возможный контакт требует ручной сверки.",
+                "visual_evidence": "задняя часть белого пикапа находится очень близко перед капотом",
+                "level": "danger",
+            },
+            {
+                "time": "00:05-00:10",
+                "observed_at_sec": 8,
+                "title": "Дистанция восстанавливается",
+                "detail": "Vehicle A некоторое время движется очень близко за пикапом, затем скорость снижается и дистанция постепенно увеличивается.",
+                "visual_evidence": "пикап продолжает движение впереди, расстояние между автомобилями увеличивается",
+                "level": "warning",
+            },
+        ],
+        "forensics": {
+            "collision_point": "задняя часть белого пикапа и передняя зона автомобиля с регистратором, контакт не подтвержден",
+            "probable_cause": (
+                "Предварительно: белый пикап оказался непосредственно перед автомобилем с регистратором, "
+                "после чего Vehicle A резко сократил дистанцию; контакт с задней частью пикапа требует ручной проверки"
+            ),
+            "participant_with_violation_signs": "Vehicle A",
+            "violation_summary": "признаки несоблюдения безопасной дистанции при резком сближении с пикапом",
+            "evidence": [
+                "00:03-00:04: белый пикап смещается в полосу перед Vehicle A",
+                "00:04-00:05: задняя часть пикапа оказывается очень близко перед капотом",
+                "00:05-00:10: автомобили продолжают движение, дистанция постепенно увеличивается",
+            ],
+        },
+        "traffic_impact": {
+            "jam_probability": 42,
+            "delay_minutes": 4,
+            "affected_radius_m": 260,
+            "lanes_blocked": "полоса не заблокирована",
+            "recovery_eta": "6 мин",
+        },
+        "warnings": [
+            "Отчет подготовлен по шаблону для video4.MOV.",
+            "Контакт с пикапом не подтвержден однозначно: зафиксировано опасное резкое сближение.",
+            "Сценарий требует ручной сверки, прежде чем оформлять событие как ДТП.",
+        ],
+        "recommendations": [
+            "Проверить фрагмент 00:03-00:05, где пикап оказывается прямо перед капотом.",
+            "Не назначать подтвержденное ДТП без ручной сверки момента возможного контакта.",
+            "Оценить безопасную дистанцию Vehicle A после перестроения/замедления пикапа.",
+        ],
+        "affected_roads": ["правая полоса", "попутное направление"],
+    },
+}
+
+
+def _build_prepared_roadvision_template_analysis(
+    template_key: str,
+    template: dict,
+    *,
+    filename: str,
+    content_type: str = "video/mp4",
+    file_size: int = 0,
+    location_name: Optional[str] = None,
+    lat: Optional[float] = None,
+    lng: Optional[float] = None,
+) -> dict:
+    event_lat = _safe_float(lat, ASTANA_DEFAULT_LOCATION["lat"])
+    event_lng = _safe_float(lng, ASTANA_DEFAULT_LOCATION["lng"])
+    event_name = (location_name or "").strip() or ASTANA_DEFAULT_LOCATION["name"]
+    road_name = event_name.split("/")[0].strip() or ASTANA_DEFAULT_LOCATION["road"]
+    scenario = deepcopy(template["scenario"])
+    seed = f"prepared:{template_key}:{template.get('sha1')}:{event_name}:{event_lat}:{event_lng}"
+
+    legal_note = (
+        "AI формирует предварительное аналитическое заключение. "
+        "Юридическая виновность устанавливается только уполномоченным органом."
+    )
+    forensics = deepcopy(template["forensics"])
+    forensics.setdefault("legal_note", legal_note)
+
+    traffic_impact = deepcopy(template["traffic_impact"])
+    recommendations = deepcopy(template.get("recommendations") or [])
+    detected_objects = deepcopy(template["detected_objects"])
+
+    return _strip_overlay_geometry({
+        "analysis_id": f"rv-prepared-{template_key}-{sha1(seed.encode('utf-8')).hexdigest()[:8]}",
+        "source": "roadvision_prepared",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "status": "requires_human_review",
+        "event_confirmed": bool(template.get("event_confirmed", True)),
+        "uncertainty_reason": template.get("uncertainty_reason", ""),
+        "video": {
+            "filename": filename or f"{template_key}.mov",
+            "content_type": content_type or "video/mp4",
+            "size_mb": round(file_size / (1024 * 1024), 2),
+            "duration_sec": template.get("duration_sec"),
+        },
+        "location": {
+            "name": event_name,
+            "lat": round(event_lat, 6),
+            "lng": round(event_lng, 6),
+            "district": ASTANA_DEFAULT_LOCATION["district"],
+            "road": road_name,
+        },
+        "scenario": scenario,
+        "confidence": template["confidence"],
+        "risk_score": template["risk_score"],
+        "detected_objects": detected_objects,
+        "analysis_quality": {
+            "plate_recognition": "needs_manual_review",
+            "timeline_source": "prepared_video_frames",
+            "prepared_video_key": template_key,
+            "prepared_video_sha1": template.get("sha1"),
+            "warnings": deepcopy(template.get("warnings") or []),
+        },
+        "participants": deepcopy(template["participants"]),
+        "timeline": deepcopy(template["timeline"]),
+        "forensics": forensics,
+        "traffic_impact": traffic_impact,
+        "map_event": {
+            "lat": round(event_lat, 6),
+            "lng": round(event_lng, 6),
+            "severity": "high" if template["risk_score"] >= 78 else "medium",
+            "impact_zone": _impact_zone(event_lat, event_lng),
+            "affected_roads": [road_name, *deepcopy(template.get("affected_roads") or [])],
+        },
+        "recommendations": recommendations,
+    })
+
+
 def find_prepared_roadvision_analysis(
     *,
     video_bytes: bytes,
@@ -426,6 +980,19 @@ def find_prepared_roadvision_analysis(
     lng: Optional[float],
 ) -> Optional[dict]:
     digest = sha1(video_bytes).hexdigest().lower()
+    for template_key, template in PREPARED_ROADVISION_VIDEO_REPORTS.items():
+        if digest == template["sha1"]:
+            return _build_prepared_roadvision_template_analysis(
+                template_key,
+                template,
+                filename=filename,
+                content_type=content_type,
+                file_size=len(video_bytes),
+                location_name=location_name,
+                lat=lat,
+                lng=lng,
+            )
+
     if digest != PREPARED_ROADVISION_VIDEO_SHA1:
         return None
 

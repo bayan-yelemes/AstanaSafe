@@ -59,6 +59,88 @@ def test_prepared_roadvision_video_hash_returns_frame_report(monkeypatch):
     assert "перестроился направо" in result["forensics"]["probable_cause"]
 
 
+def test_prepared_named_video_template_returns_video1_report(monkeypatch):
+    video_bytes = b"prepared named video1 sample"
+    template = dict(roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS["video1"])
+    template["sha1"] = sha1(video_bytes).hexdigest()
+    monkeypatch.setitem(
+        roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS,
+        "video1",
+        template,
+    )
+
+    result = roadvision_service.find_prepared_roadvision_analysis(
+        video_bytes=video_bytes,
+        filename="video1.mov",
+        content_type="video/quicktime",
+        location_name="Кабанбай батыра / Сыганак",
+        lat=51.1239,
+        lng=71.4302,
+    )
+
+    assert result is not None
+    assert result["source"] == "roadvision_prepared"
+    assert result["analysis_quality"]["prepared_video_key"] == "video1"
+    assert result["scenario"]["title"] == "Столкновение на перекрестке с белым служебным фургоном"
+    assert result["forensics"]["participant_with_violation_signs"] == "Vehicle B"
+    assert result["timeline"][2]["title"] == "Момент столкновения"
+
+
+def test_prepared_named_video2_uses_rear_end_lane_change_report(monkeypatch):
+    video_bytes = b"prepared named video2 sample"
+    template = dict(roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS["video2"])
+    template["sha1"] = sha1(video_bytes).hexdigest()
+    monkeypatch.setitem(
+        roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS,
+        "video2",
+        template,
+    )
+
+    result = roadvision_service.find_prepared_roadvision_analysis(
+        video_bytes=video_bytes,
+        filename="video2.mov",
+        content_type="video/quicktime",
+        location_name="Кабанбай батыра / Сыганак",
+        lat=51.1239,
+        lng=71.4302,
+    )
+
+    assert result is not None
+    assert result["analysis_quality"]["prepared_video_key"] == "video2"
+    assert result["scenario"]["impact_type"] == "rear_end"
+    assert result["forensics"]["participant_with_violation_signs"] == "Vehicle B"
+    assert "черный автомобиль" in result["forensics"]["probable_cause"]
+    assert "заднюю часть серого автомобиля" in result["forensics"]["probable_cause"]
+    assert "регистратор не является участником дтп" in result["analysis_quality"]["warnings"][1].lower()
+    assert "мотоцикл" not in result["forensics"]["probable_cause"].lower()
+
+
+def test_prepared_named_video4_marks_contact_as_unconfirmed(monkeypatch):
+    video_bytes = b"prepared named video4 sample"
+    template = dict(roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS["video4"])
+    template["sha1"] = sha1(video_bytes).hexdigest()
+    monkeypatch.setitem(
+        roadvision_service.PREPARED_ROADVISION_VIDEO_REPORTS,
+        "video4",
+        template,
+    )
+
+    result = roadvision_service.find_prepared_roadvision_analysis(
+        video_bytes=video_bytes,
+        filename="video4.MOV",
+        content_type="video/quicktime",
+        location_name="Кабанбай батыра / Сыганак",
+        lat=51.1239,
+        lng=71.4302,
+    )
+
+    assert result is not None
+    assert result["analysis_quality"]["prepared_video_key"] == "video4"
+    assert result["event_confirmed"] is False
+    assert "не подтвержден" in result["uncertainty_reason"]
+    assert result["forensics"]["participant_with_violation_signs"] == "Vehicle A"
+
+
 def test_roadvision_router_returns_prepared_report_for_demo_hash(monkeypatch):
     class Upload:
         filename = "1000081819.mp4"

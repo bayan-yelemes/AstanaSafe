@@ -7,7 +7,6 @@ import { useAppStore } from "../store/useAppStore";
 import useDistrictsGeojson from "../hooks/useDistrictsGeojson";
 import { getRawRealAccidents } from "../services/accidentsService";
 import { getRawTrafficReports } from "../services/trafficReportsService";
-import { API_BASE_URL } from "../api/client";
 import { resolveDisplayDistrict } from "../utils/districtUtils";
 import { reportError } from "../utils/logger";
 import {
@@ -178,6 +177,35 @@ function getSeverityBadgeStyle(severity) {
   return { color: "#8b5cf6", dot: "#8b5cf6" };
 }
 
+function downloadBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function escapeCsvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replaceAll('"', '""')}"`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatExportFileDate(date = new Date()) {
+  return formatLocalDate(date).replaceAll("-", "");
+}
+
 function BigStatCard({ icon, iconBg, label, value, subtitle }) {
   return (
     <div className={styles.reportsStyle1}>
@@ -345,6 +373,29 @@ export default function Reports() {
 
   const totalFilteredReports = filteredRows.length;
 
+  const formatDistrictForLanguage = (district) => {
+    const normalized = district || "Unknown";
+    const translated = t(`districtName.${normalized}`);
+    return translated === `districtName.${normalized}` ? normalized : translated;
+  };
+
+  const buildExportRows = () =>
+    filteredRows.map((row) => ({
+      dateTime: `${formatTableDate(row.date)} ${formatTableTime(row.date)}`,
+      district: formatDistrictForLanguage(row.district),
+      type: tt(row.type),
+      severity: ts(row.severity),
+      weather: tw(row.weather),
+    }));
+
+  const exportHeaders = () => [
+    t("common.dateTime"),
+    t("common.district"),
+    t("common.type"),
+    t("common.severity"),
+    t("common.weather"),
+  ];
+
   const highSeverityRate = useMemo(() => {
     if (!filteredRows.length) return "0%";
     const highCount = filteredRows.filter(
@@ -380,8 +431,159 @@ export default function Reports() {
     setEndDate(null);
   };
 
-  const handleDownload = (type) => {
-    window.open(`${API_BASE_URL}/reports/export/${type}`, "_blank");
+  const handleDownloadCsv = () => {
+    const headers = exportHeaders();
+    const rows = buildExportRows();
+    const csvLines = [
+      headers.map(escapeCsvCell).join(","),
+      ...rows.map((row) =>
+        [row.dateTime, row.district, row.type, row.severity, row.weather]
+          .map(escapeCsvCell)
+          .join(","),
+      ),
+    ];
+    const csv = `\uFEFF${csvLines.join("\r\n")}`;
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    downloadBlob(
+      blob,
+      `astanasafe-reports-${language}-${formatExportFileDate()}.csv`,
+    );
+  };
+
+  const handleDownloadPdf = () => {
+    const headers = exportHeaders();
+    const rows = buildExportRows();
+    const title = t("reports.historicalSafetyData");
+    const subtitle = t("reports.auditTrail");
+    const generatedAt = `${t("reports.generatedAt")}: ${formatTableDate(new Date())} ${formatTableTime(new Date())}`;
+    const rowsLabel = `${t("reports.exportRows")}: ${rows.length}`;
+
+    const tableRows = rows.length
+      ? rows
+          .map(
+            (row) => `
+              <tr>
+                <td>${escapeHtml(row.dateTime)}</td>
+                <td>${escapeHtml(row.district)}</td>
+                <td>${escapeHtml(row.type)}</td>
+                <td>${escapeHtml(row.severity)}</td>
+                <td>${escapeHtml(row.weather)}</td>
+              </tr>
+            `,
+          )
+          .join("")
+      : `<tr><td colspan="5" class="empty">${escapeHtml(t("reports.noReportData"))}</td></tr>`;
+
+    const html = `<!doctype html>
+      <html lang="${language === "kz" ? "kk" : language}">
+        <head>
+          <meta charset="utf-8" />
+          <title>${escapeHtml(title)}</title>
+          <style>
+            @page { size: A4; margin: 16mm; }
+            body {
+              font-family: Arial, "Segoe UI", sans-serif;
+              color: #0f172a;
+              margin: 0;
+              background: #ffffff;
+            }
+            header {
+              display: flex;
+              justify-content: space-between;
+              gap: 24px;
+              align-items: flex-start;
+              border-bottom: 2px solid #e5e7eb;
+              padding-bottom: 14px;
+              margin-bottom: 18px;
+            }
+            h1 {
+              font-size: 22px;
+              line-height: 1.2;
+              margin: 0 0 8px;
+            }
+            p {
+              margin: 0;
+              color: #475569;
+              font-size: 12px;
+              line-height: 1.45;
+            }
+            .meta {
+              text-align: right;
+              white-space: nowrap;
+              color: #475569;
+              font-size: 11px;
+              line-height: 1.7;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 11px;
+            }
+            th {
+              text-align: left;
+              color: #64748b;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              font-size: 9px;
+              border-bottom: 1px solid #cbd5e1;
+              padding: 9px 8px;
+            }
+            td {
+              border-bottom: 1px solid #e5e7eb;
+              padding: 9px 8px;
+              vertical-align: top;
+            }
+            tr:nth-child(even) td {
+              background: #f8fafc;
+            }
+            .empty {
+              color: #64748b;
+              text-align: center;
+              padding: 28px 8px;
+            }
+          </style>
+        </head>
+        <body>
+          <header>
+            <div>
+              <h1>${escapeHtml(title)}</h1>
+              <p>${escapeHtml(subtitle)}</p>
+            </div>
+            <div class="meta">
+              <div>${escapeHtml(generatedAt)}</div>
+              <div>${escapeHtml(rowsLabel)}</div>
+            </div>
+          </header>
+          <table>
+            <thead>
+              <tr>
+                ${headers.map((header) => `<th>${escapeHtml(header)}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+          <script>
+            window.addEventListener("load", () => {
+              window.print();
+            });
+          </script>
+        </body>
+      </html>`;
+
+    const printWindow = window.open("", "_blank");
+
+    if (!printWindow) {
+      downloadBlob(
+        new Blob([html], { type: "text/html;charset=utf-8" }),
+        `astanasafe-reports-${language}-${formatExportFileDate()}.html`,
+      );
+      return;
+    }
+
+    printWindow.opener = null;
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
 
   const handleViewOnMap = (row) => {
@@ -458,7 +660,7 @@ export default function Reports() {
 
             <div className={styles.reportsStyle11}>
               <button
-                onClick={() => handleDownload("csv")}
+                onClick={handleDownloadCsv}
                 className={styles.reportsStyle12}
               >
                 <Download size={15} />
@@ -466,7 +668,7 @@ export default function Reports() {
               </button>
 
               <button
-                onClick={() => handleDownload("pdf")}
+                onClick={handleDownloadPdf}
                 className={styles.reportsStyle13}
               >
                 <Download size={15} />
